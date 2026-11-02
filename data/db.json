@@ -1,0 +1,48 @@
+{
+  "records": [
+    {
+      "id": "scan_1793512552917_9f9o5m",
+      "user_id": "test_analyst",
+      "image_name": "specimen_test.png",
+      "image_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      "detection_result": "Inconclusive",
+      "confidence_score": 99,
+      "model_name": "Gemini 3.1 Flash Lite Vision + Forensics Engine",
+      "analysis_details": {
+        "ai_probability": 0,
+        "human_probability": 0,
+        "visual_artifacts": [],
+        "lighting_and_shadow_assessment": "None. The image is a uniform color field with no luminance variance, shadow projection, or specular highlights.",
+        "texture_and_skin_assessment": "N/A. There are no textures, patterns, or surface details present.",
+        "anatomical_and_geometric_coherence": "N/A. There is no geometry, structure, or anatomical representation.",
+        "compression_and_pixel_anomalies": "The image consists of a flat, monochromatic pixel grid. No JPEG compression artifacts, latent noise, or sensor-specific noise patterns are present.",
+        "explainable_summary": "The provided image is a solid, uniform field of a single hex color (approximate #66FF66). It contains no visual data, luminance variance, subject matter, or structural information to analyze for AI or photographic traits. It is essentially a digital fill, not a captured or generated scene.",
+        "supporting_reasons": [
+          "Uniform color data (monochromatic).",
+          "Complete absence of image content.",
+          "Non-representative of any optical or generative diffusion process."
+        ],
+        "counter_factors_or_uncertainty": [
+          "The input is a null data set in terms of forensic features."
+        ],
+        "detection_limitations": "Forensic analysis requires visual data with spatial information to evaluate. An empty color field cannot be classified as AI-generated or a photograph as it contains no discernible content.",
+        "metadata": {
+          "hasExif": false,
+          "rawTagsFound": 0,
+          "assessmentNote": "No camera hardware or capture EXIF block found. (Common for web-compressed photos, social media re-encodes, screenshots, and pure synthetic generations. Lack of EXIF is NOT conclusive proof of AI generation.)"
+        },
+        "frequency_analysis_notes": "Analysis processed in 14292ms using dual-pass forensic vision verification."
+      },
+      "file_size": 100,
+      "mime_type": "image/png",
+      "created_at": "2026-11-01T05:55:52.917Z"
+    }
+  ],
+  "userQuotas": {
+    "test_analyst": {
+      "scansToday": 1,
+      "lastReset": "2026-11-01",
+      "tier": "free"
+    }
+  }
+}
