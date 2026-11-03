@@ -1,0 +1,6 @@
+{
+  "name": "AI Image Authenticity Detector",
+  "description": "Advanced forensic AI image authenticity analysis to detect synthetic, diffusion, and real photographic imagery.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
