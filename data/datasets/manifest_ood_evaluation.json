@@ -1,0 +1,35 @@
+{
+  "name": "KRYPTX Independent OOD Forensic Evaluation Suite",
+  "description": "Evaluation set containing samples from AI generators and acoustic conditions deliberately withheld from training data.",
+  "generated_at": "2026-11-03T07:54:36.936Z",
+  "image_ood_suite": {
+    "unseen_generators": [
+      "Flux.1-Dev",
+      "Ideogram v2",
+      "Midjourney v6.1",
+      "Stable Diffusion 3.5 Large",
+      "Recraft v3"
+    ],
+    "perturbations": [
+      "Social media compression (Q=50)",
+      "Adverse downsampling (128x128 crop)",
+      "Color jitter"
+    ],
+    "sample_count": 5000
+  },
+  "voice_ood_suite": {
+    "unseen_generators": [
+      "ElevenLabs Multilingual v2",
+      "Chatterbox TTS",
+      "OpenAI TTS-1-HD",
+      "Tortoise-TTS v2",
+      "RVC v2 (Retrieval-based Voice Conversion)"
+    ],
+    "perturbations": [
+      "Short duration (0.8s, 1.2s)",
+      "Telephonic bandpass (300Hz-3400Hz)",
+      "Babble acoustic noise"
+    ],
+    "sample_count": 5000
+  }
+}

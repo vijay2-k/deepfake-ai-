@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Video, Mic, FileText, ArrowUpRight, Sparkles } from 'lucide-react';
+import { Image, Video, Mic, FileText, ArrowUpRight } from 'lucide-react';
 
 interface KeyCapabilitiesProps {
   onSelectCapability?: (type: 'image' | 'video' | 'audio' | 'report') => void;
@@ -15,10 +15,10 @@ export const KeyCapabilities: React.FC<KeyCapabilitiesProps> = ({
       title: 'Image Detector',
       description: 'Detects AI-generated, edited, and manipulated images with spectral ELA and diffusion signature mapping.',
       icon: Image,
-      accentBorder: 'border-amber-500/40 hover:border-amber-400',
-      accentGlow: 'hover:shadow-[0_0_30px_rgba(255,157,50,0.25)]',
-      iconBg: 'bg-amber-500/10 text-[#FF9D32] border border-amber-500/30',
-      gradientTag: 'text-amber-400',
+      accentBorder: 'border-[#E4DEFF] hover:border-[#5515D8]',
+      accentGlow: 'hover:shadow-[0_10px_30px_rgba(85,21,216,0.12)]',
+      iconBg: 'bg-[#F1EEFF] text-[#5515D8] border border-[#E4DEFF]',
+      gradientTag: 'text-[#5515D8]',
       activeBadge: 'Diffusion / Midjourney / FLUX',
     },
     {
@@ -27,10 +27,10 @@ export const KeyCapabilities: React.FC<KeyCapabilitiesProps> = ({
       title: 'Video Deepfake',
       description: 'Identifies deepfake videos, face swaps, lip-sync anomalies, and synthetic temporal manipulation.',
       icon: Video,
-      accentBorder: 'border-blue-500/40 hover:border-blue-400',
-      accentGlow: 'hover:shadow-[0_0_30px_rgba(38,124,255,0.25)]',
-      iconBg: 'bg-blue-500/10 text-[#267CFF] border border-blue-500/30',
-      gradientTag: 'text-blue-400',
+      accentBorder: 'border-[#E4DEFF] hover:border-[#1677FF]',
+      accentGlow: 'hover:shadow-[0_10px_30px_rgba(22,119,255,0.12)]',
+      iconBg: 'bg-[#EDF5FF] text-[#1677FF] border border-[#D0E4FF]',
+      gradientTag: 'text-[#1677FF]',
       activeBadge: 'Temporal Optical Flow',
     },
     {
@@ -39,10 +39,10 @@ export const KeyCapabilities: React.FC<KeyCapabilitiesProps> = ({
       title: 'Voice Clone',
       description: 'Analyzes synthetic speech, cloned voices, neural vocoder phase artifacts, and prosodic pitch variance.',
       icon: Mic,
-      accentBorder: 'border-violet-500/40 hover:border-violet-400',
-      accentGlow: 'hover:shadow-[0_0_30px_rgba(139,92,246,0.25)]',
-      iconBg: 'bg-violet-500/10 text-[#8B5CF6] border border-violet-500/30',
-      gradientTag: 'text-violet-400',
+      accentBorder: 'border-[#E4DEFF] hover:border-[#8B32FF]',
+      accentGlow: 'hover:shadow-[0_10px_30px_rgba(139,50,255,0.12)]',
+      iconBg: 'bg-[#F6EEFF] text-[#8B32FF] border border-[#E8D4FF]',
+      gradientTag: 'text-[#8B32FF]',
       activeBadge: 'ElevenLabs / VALL-E / TTS',
     },
     {
@@ -51,75 +51,79 @@ export const KeyCapabilities: React.FC<KeyCapabilitiesProps> = ({
       title: 'Forensic Report',
       description: 'Generates detailed courtroom-grade evidence, Sobel heatmaps, tamper percentages, and explainable findings.',
       icon: FileText,
-      accentBorder: 'border-teal-500/40 hover:border-teal-400',
-      accentGlow: 'hover:shadow-[0_0_30px_rgba(20,184,166,0.25)]',
-      iconBg: 'bg-teal-500/10 text-[#14B8A6] border border-teal-500/30',
-      gradientTag: 'text-teal-400',
+      accentBorder: 'border-[#E4DEFF] hover:border-[#0284C7]',
+      accentGlow: 'hover:shadow-[0_10px_30px_rgba(2,132,199,0.12)]',
+      iconBg: 'bg-[#EAF8FF] text-[#0284C7] border border-[#CCEFFF]',
+      gradientTag: 'text-[#0284C7]',
       activeBadge: 'Verified Cryptographic Audit',
     },
   ];
 
   return (
-    <section id="capabilities" className="relative py-12 lg:py-16">
+    <section id="capabilities" className="relative py-14 lg:py-18 bg-white border-t border-[#E4DEFF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
           <div>
-            <div className="text-[11px] font-mono font-bold tracking-widest uppercase text-cyan-400 mb-1">
+            <div className="text-[11px] font-mono font-bold tracking-widest uppercase text-[#5515D8] mb-1">
               MULTIMODAL INTELLIGENCE ARSENAL
             </div>
-            <h3 className="text-2xl sm:text-3xl font-heading font-extrabold text-white tracking-tight">
+            <h3 className="text-2xl sm:text-3xl font-heading font-extrabold text-[#10132F] tracking-tight">
               Key Capabilities
             </h3>
           </div>
-          <p className="text-xs sm:text-sm text-slate-400 max-w-md">
-            Four specialized detection engines operating concurrently across visual, temporal, and auditory media vectors.
+          <p className="text-xs sm:text-sm text-[#525779] max-w-md">
+            Dedicated forensic models specialized for different media formats, synthesis architectures, and manipulation vectors.
           </p>
         </div>
 
-        {/* 4 Horizontal Capability Cards Matching Reference */}
+        {/* 4 Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {capabilities.map((item) => {
-            const Icon = item.icon;
+          {capabilities.map((cap) => {
+            const Icon = cap.icon;
             return (
               <div
-                key={item.id}
-                onClick={() => onSelectCapability && onSelectCapability(item.id)}
-                className={`group relative p-5 rounded-2xl bg-gradient-to-b from-[#061224]/90 to-[#030914]/95 border ${item.accentBorder} ${item.accentGlow} backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer flex flex-col justify-between`}
+                key={cap.id}
+                onClick={() => onSelectCapability?.(cap.id)}
+                className={`group p-6 rounded-2xl bg-[#FAF8FF] border ${cap.accentBorder} transition-all duration-300 hover:-translate-y-1 ${cap.accentGlow} cursor-pointer flex flex-col justify-between shadow-sm`}
               >
                 <div>
-                  {/* Top Row: Icon & Tag */}
-                  <div className="flex items-center justify-between mb-4">
+                  {/* Top Bar with Icon and Arrow */}
+                  <div className="flex items-center justify-between mb-5">
                     <div
-                      className={`w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${item.iconBg}`}
+                      className={`w-12 h-12 rounded-2xl ${cap.iconBg} flex items-center justify-center transition-transform group-hover:scale-110 duration-200 shadow-sm`}
                     >
                       <Icon className="w-6 h-6" />
                     </div>
 
-                    <div className="w-7 h-7 rounded-full bg-slate-800/60 flex items-center justify-center text-slate-400 group-hover:text-white group-hover:bg-cyan-500/20 transition-all">
-                      <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    <div className="w-8 h-8 rounded-full bg-white border border-[#E4DEFF] flex items-center justify-center text-[#525779] group-hover:text-[#5515D8] group-hover:border-[#5515D8]/40 transition-colors shadow-sm">
+                      <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </div>
                   </div>
 
-                  {/* Title & Description */}
-                  <div className="text-[10px] font-mono font-bold tracking-wider uppercase mb-1 text-slate-400">
-                    {item.tag}
+                  {/* Micro Tag */}
+                  <div className={`text-[10px] font-mono font-bold uppercase tracking-wider mb-2 ${cap.gradientTag}`}>
+                    {cap.tag}
                   </div>
-                  <h4 className="font-heading font-bold text-white text-base sm:text-lg mb-2">
-                    {item.title}
+
+                  {/* Title */}
+                  <h4 className="text-lg font-heading font-bold text-[#10132F] mb-2 tracking-tight group-hover:text-[#5515D8] transition-colors">
+                    {cap.title}
                   </h4>
-                  <p className="text-xs text-slate-300/80 leading-relaxed">
-                    {item.description}
+
+                  {/* Description */}
+                  <p className="text-xs text-[#525779] leading-relaxed">
+                    {cap.description}
                   </p>
                 </div>
 
-                {/* Bottom Tech Badge */}
-                <div className="mt-5 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-cyan-400/90 font-medium truncate">
-                    {item.activeBadge}
+                {/* Bottom Active Engine Pill */}
+                <div className="mt-6 pt-4 border-t border-[#E4DEFF] flex items-center justify-between text-[11px] font-mono text-[#525779]">
+                  <span>Engine</span>
+                  <span className="font-semibold text-[#10132F] bg-white px-2 py-0.5 rounded-full border border-[#E4DEFF]">
+                    {cap.activeBadge}
                   </span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
                 </div>
               </div>
             );
@@ -130,4 +134,3 @@ export const KeyCapabilities: React.FC<KeyCapabilitiesProps> = ({
     </section>
   );
 };
-

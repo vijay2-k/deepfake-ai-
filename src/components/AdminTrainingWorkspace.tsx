@@ -377,9 +377,9 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
   const IconComp = targetMeta.icon;
 
   return (
-    <div className="flex flex-col h-screen bg-[#040814] text-slate-200 overflow-hidden selection:bg-cyan-500/30">
+    <div className="flex flex-col h-screen bg-[#F8F7FF] bg-[#FFFFFF] text-slate-200 overflow-hidden selection:bg-[#5515D8]/30 selection:text-[#5515D8]">
       {/* Top Banner / Header */}
-      <header className="h-16 px-4 sm:px-6 flex items-center justify-between bg-[#080F20] border-b border-cyan-500/20 shrink-0 z-20">
+      <header className="h-16 px-4 sm:px-6 flex items-center justify-between bg-white border-b border-cyan-500/20 shrink-0 z-20">
         <div className="flex items-center gap-3">
           <button
             onClick={onBackToOverview}
@@ -435,9 +435,9 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
       {/* Main Container: Sidebar + Chat Feed */}
       <div className="flex flex-1 overflow-hidden">
         {/* LEFT SIDEBAR: Sessions & References */}
-        <aside className="w-80 border-r border-slate-800 bg-[#060B18] flex flex-col shrink-0 hidden md:flex">
+        <aside className="w-80 border-r border-[#E4DEFF] bg-[#060B18] flex flex-col shrink-0 hidden md:flex">
           {/* New Session Button */}
-          <div className="p-3 border-b border-slate-800">
+          <div className="p-3 border-b border-[#E4DEFF]">
             <button
               onClick={createSession}
               className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 hover:border-cyan-500/50 hover:text-white text-slate-300 transition-colors"
@@ -461,7 +461,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
                   className={`w-full text-left p-2.5 rounded-xl transition-all flex flex-col gap-1 ${
                     isActive
                       ? 'bg-cyan-500/10 border border-cyan-500/30 text-white'
-                      : 'hover:bg-slate-900/60 border border-transparent text-slate-400'
+                      : 'hover:bg-[#F8F7FF] border border-transparent text-slate-400'
                   }`}
                 >
                   <div className="flex items-center justify-between text-xs font-semibold">
@@ -487,7 +487,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
           </div>
 
           {/* Ingested References Manifest */}
-          <div className="p-3 border-t border-slate-800 bg-[#080F20]/50 space-y-2">
+          <div className="p-3 border-t border-[#E4DEFF] bg-white/60 space-y-2">
             <div className="flex items-center justify-between text-xs font-semibold text-slate-300">
               <span className="flex items-center gap-1.5">
                 <Layers className="w-3.5 h-3.5 text-cyan-400" />
@@ -503,7 +503,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
                 currentSession.references.map((ref) => (
                   <div
                     key={ref.id}
-                    className="p-2 rounded-lg bg-slate-900/80 border border-slate-800 text-[11px] space-y-1 font-mono"
+                    className="p-2 rounded-lg bg-[#F8F7FF] border border-[#E4DEFF] text-[11px] space-y-1 font-mono"
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-white font-semibold truncate max-w-[170px]">
@@ -528,7 +528,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
         </aside>
 
         {/* MAIN CHAT & TRAINING WORKSPACE */}
-        <main className="flex-1 flex flex-col bg-[#040814] relative">
+        <main className="flex-1 flex flex-col bg-[#F8F7FF] bg-[#FFFFFF] relative">
           {/* Activation Success Banner */}
           {activationSuccess && (
             <div className="p-3 bg-emerald-950/80 border-b border-emerald-500/40 text-emerald-300 text-xs flex items-center justify-between px-6 z-10 animate-fade-in">
@@ -562,10 +562,10 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
                       className={`max-w-2xl rounded-2xl p-4 text-xs leading-relaxed space-y-2 ${
                         isAdmin
                           ? 'bg-cyan-950/40 border border-cyan-500/30 text-cyan-100 rounded-tr-none'
-                          : 'bg-[#080F20] border border-slate-800 text-slate-300 rounded-tl-none shadow-xl'
+                          : 'bg-white border border-[#E4DEFF] text-slate-300 rounded-tl-none shadow-xl'
                       }`}
                     >
-                      <div className="flex items-center justify-between gap-4 text-[10px] font-mono text-slate-500 border-b border-slate-800/60 pb-1.5">
+                      <div className="flex items-center justify-between gap-4 text-[10px] font-mono text-slate-500 border-b border-[#E4DEFF]/60 pb-1.5">
                         <span className="font-bold uppercase tracking-wider text-slate-400">
                           {isAdmin ? 'Administrator Instruction' : `${targetMeta.name} Directive`}
                         </span>
@@ -576,11 +576,11 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
 
                       {/* References Attached in Message */}
                       {msg.references && msg.references.length > 0 && (
-                        <div className="pt-2 border-t border-slate-800/80 space-y-2">
+                        <div className="pt-2 border-t border-[#E4DEFF]/80 space-y-2">
                           {msg.references.map((ref) => (
                             <div
                               key={ref.id}
-                              className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1 font-mono"
+                              className="p-2.5 rounded-xl bg-slate-900 border border-[#E4DEFF] space-y-1 font-mono"
                             >
                               <div className="flex items-center justify-between text-[11px] text-cyan-300 font-bold">
                                 <span>{ref.name}</span>
@@ -638,7 +638,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
                 <div className={`p-2 rounded-xl shrink-0 ${targetMeta.themeBg} ${targetMeta.themeBorder} border`}>
                   <Bot className={`w-4 h-4 ${targetMeta.themeText} animate-spin`} />
                 </div>
-                <div className="bg-[#080F20] border border-slate-800 rounded-2xl p-3 text-xs text-slate-400 flex items-center gap-2">
+                <div className="bg-white border border-[#E4DEFF] rounded-2xl p-3 text-xs text-slate-400 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
                   <span>Synthesizing forensic guidance and evaluating empirical parameters...</span>
                 </div>
@@ -659,7 +659,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
           )}
 
           {/* Bottom Control & Input Bar */}
-          <div className="p-4 bg-[#080F20] border-t border-slate-800 shrink-0 space-y-2">
+          <div className="p-4 bg-white border-t border-[#E4DEFF] shrink-0 space-y-2">
             {/* Action Bar */}
             <div className="flex items-center gap-2 flex-wrap">
               <button
@@ -709,7 +709,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
                 }}
                 placeholder={`Provide forensic observations, detection rules, or empirical edge cases... (or type "END" to synthesize formal plan)`}
                 rows={2}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 transition-colors resize-none"
+                className="flex-1 px-4 py-2.5 rounded-xl bg-[#F8F7FF] border border-slate-700 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-[#5515D8] transition-colors resize-none"
               />
 
               <button
@@ -727,9 +727,9 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
 
       {/* MODAL 1: UPLOAD REFERENCE MEDIA */}
       {uploadModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
-          <div className="relative w-full max-w-lg bg-[#080F20] border border-cyan-500/30 rounded-2xl p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#F8F7FF] bg-[#FFFFFF]/85 backdrop-blur-md">
+          <div className="relative w-full max-w-lg bg-white border border-cyan-500/30 rounded-2xl p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E4DEFF]">
               <h3 className="text-base font-heading font-bold text-white flex items-center gap-2">
                 <Upload className="w-5 h-5 text-cyan-400" />
                 <span>Upload Reference Sample</span>
@@ -784,7 +784,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
                   value={sampleDesc}
                   onChange={(e) => setSampleDesc(e.target.value)}
                   placeholder="e.g. Midjourney v6 High-Frequency Latent Noise Reference"
-                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-cyan-500"
+                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-[#5515D8]"
                 />
               </div>
 
@@ -797,7 +797,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
                   value={adminObservations}
                   onChange={(e) => setAdminObservations(e.target.value)}
                   placeholder="Describe specific anomalies: e.g., specular divergence on iris, Sobel gradient distortion, vocoder phase metallic buzz..."
-                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-cyan-500"
+                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-[#5515D8]"
                 />
               </div>
 
@@ -824,9 +824,9 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
 
       {/* MODAL 2: INGEST RESEARCH URL */}
       {urlModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
-          <div className="relative w-full max-w-lg bg-[#080F20] border border-blue-500/30 rounded-2xl p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#F8F7FF] bg-[#FFFFFF]/85 backdrop-blur-md">
+          <div className="relative w-full max-w-lg bg-white border border-blue-500/30 rounded-2xl p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E4DEFF]">
               <h3 className="text-base font-heading font-bold text-white flex items-center gap-2">
                 <Globe className="w-5 h-5 text-blue-400" />
                 <span>Ingest Forensic Research URL</span>
@@ -847,7 +847,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
                   value={researchUrl}
                   onChange={(e) => setResearchUrl(e.target.value)}
                   placeholder="https://arxiv.org/abs/... or https://..."
-                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
+                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-[#5515D8]"
                 />
               </div>
 
@@ -860,7 +860,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
                   value={researchNotes}
                   onChange={(e) => setResearchNotes(e.target.value)}
                   placeholder="Focus on temporal boundary anomalies and lip sync metrics..."
-                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
+                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-[#5515D8]"
                 />
               </div>
 
@@ -893,8 +893,8 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
 
       {/* MODAL 3: THE 8-SECTION TRAINING PLAN REVIEW */}
       {planModalOpen && currentSession?.proposedPlan && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-lg">
-          <div className="relative w-full max-w-4xl max-h-[90vh] bg-[#080F20] border border-cyan-500/40 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#F8F7FF] bg-[#FFFFFF]/90 backdrop-blur-lg">
+          <div className="relative w-full max-w-4xl max-h-[90vh] bg-white border border-cyan-500/40 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
             {/* Modal Header */}
             <div className="p-5 border-b border-cyan-500/20 bg-[#060B18] flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
@@ -924,7 +924,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
             {/* Modal Body: 8 Structured Sections */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6 text-xs text-slate-300 font-sans">
               {/* Section 1 */}
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-1.5">
+              <div className="p-4 rounded-xl bg-[#F8F7FF] border border-[#E4DEFF] space-y-1.5">
                 <div className="text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-bold">
                   Section 1 — Training Objective & Target System
                 </div>
@@ -934,7 +934,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
               </div>
 
               {/* Section 2 */}
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+              <div className="p-4 rounded-xl bg-[#F8F7FF] border border-[#E4DEFF] space-y-2">
                 <div className="text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-bold">
                   Section 2 — Core Forensic Knowledge & Signatures
                 </div>
@@ -948,7 +948,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
               </div>
 
               {/* Section 3 */}
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+              <div className="p-4 rounded-xl bg-[#F8F7FF] border border-[#E4DEFF] space-y-2">
                 <div className="text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-bold">
                   Section 3 — Reference Material & Sample Manifest
                 </div>
@@ -962,7 +962,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
               </div>
 
               {/* Section 4 */}
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+              <div className="p-4 rounded-xl bg-[#F8F7FF] border border-[#E4DEFF] space-y-2">
                 <div className="text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-bold">
                   Section 4 — Operational Detection Guidance
                 </div>
@@ -976,7 +976,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
               </div>
 
               {/* Section 5 */}
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-1.5">
+              <div className="p-4 rounded-xl bg-[#F8F7FF] border border-[#E4DEFF] space-y-1.5">
                 <div className="text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-bold">
                   Section 5 — Validation & Benchmark Plan
                 </div>
@@ -986,7 +986,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
               </div>
 
               {/* Section 6 */}
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-1.5">
+              <div className="p-4 rounded-xl bg-[#F8F7FF] border border-[#E4DEFF] space-y-1.5">
                 <div className="text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-bold">
                   Section 6 — Known Limitations & Edge Cases
                 </div>
@@ -1007,7 +1007,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
               </div>
 
               {/* Section 8 */}
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-1.5">
+              <div className="p-4 rounded-xl bg-[#F8F7FF] border border-[#E4DEFF] space-y-1.5">
                 <div className="text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-bold">
                   Section 8 — Target Version Number & Rollout Strategy
                 </div>
@@ -1018,7 +1018,7 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
             </div>
 
             {/* Modal Actions */}
-            <div className="p-4 border-t border-slate-800 bg-[#060B18] flex items-center justify-between shrink-0">
+            <div className="p-4 border-t border-[#E4DEFF] bg-[#060B18] flex items-center justify-between shrink-0">
               <button
                 type="button"
                 onClick={() => setRejectionModalOpen(true)}
@@ -1051,8 +1051,8 @@ export const AdminTrainingWorkspace: React.FC<AdminTrainingWorkspaceProps> = ({
 
       {/* MODAL 4: REJECT FEEDBACK MODAL */}
       {rejectionModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
-          <div className="relative w-full max-w-md bg-[#080F20] border border-rose-500/30 rounded-2xl p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#F8F7FF] bg-[#FFFFFF]/85 backdrop-blur-md">
+          <div className="relative w-full max-w-md bg-white border border-rose-500/30 rounded-2xl p-6 shadow-2xl space-y-4">
             <h3 className="text-base font-heading font-bold text-white flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-rose-400" />
               <span>Request Plan Revisions</span>

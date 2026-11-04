@@ -1,0 +1,30 @@
+{
+  "dataset_id": "genimage",
+  "official_source": "https://github.com/GenImage-Dataset/GenImage (NeurIPS 2023)",
+  "license": "Creative Commons Attribution-NonCommercial 4.0 (CC BY-NC 4.0)",
+  "format": "RGB PNG/JPEG images (512x512, 1024x1024)",
+  "leakage_policy": "Strict ImageNet synset class-level partitioning between train and test splits. Zero prompt overlap across splits.",
+  "splits": {
+    "train": {
+      "real_samples": 10000,
+      "synthetic_samples": 10000,
+      "class_ratio": "1.0 (50% real / 50% synthetic)",
+      "partition_strategy": "Stratified by generator model family"
+    },
+    "validation": {
+      "real_samples": 2000,
+      "synthetic_samples": 2000,
+      "class_ratio": "1.0"
+    },
+    "independent_test": {
+      "real_samples": 3000,
+      "synthetic_samples": 3000,
+      "class_ratio": "1.0",
+      "evaluation_conditions": [
+        "Full resolution (512x512)",
+        "Partial crops (128x128, 256x256)",
+        "JPEG compression (Q=50, Q=75, Q=90)"
+      ]
+    }
+  }
+}

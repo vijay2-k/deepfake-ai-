@@ -1,0 +1,31 @@
+{
+  "dataset_id": "asvspoof_2019",
+  "official_source": "https://www.asvspoof.org/ (Interspeech / University of Edinburgh)",
+  "license": "Open Data Commons Attribution License (ODC-By v1.0)",
+  "format": "16-bit 16kHz Linear PCM FLAC / WAV",
+  "leakage_policy": "Speaker-disjoint partitioning: zero speaker overlap between training (20 speakers), development (10 speakers), and evaluation (48 speakers).",
+  "splits": {
+    "train": {
+      "bonafide_samples": 8000,
+      "spoof_samples": 8000,
+      "speakers_count": 20,
+      "partition_strategy": "Strict speaker-independent isolation"
+    },
+    "validation": {
+      "bonafide_samples": 1500,
+      "spoof_samples": 1500,
+      "speakers_count": 10
+    },
+    "independent_test": {
+      "bonafide_samples": 2500,
+      "spoof_samples": 2500,
+      "speakers_count": 48,
+      "evaluation_conditions": [
+        "Short clips (< 1.5s speech)",
+        "Standard clips (1.5s - 5.0s speech)",
+        "Long recordings (> 5.0s speech)",
+        "Acoustic noise (Clean SNR > 25dB, Moderate SNR 15dB, Heavy SNR 6dB)"
+      ]
+    }
+  }
+}

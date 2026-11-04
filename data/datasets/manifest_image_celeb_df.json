@@ -1,0 +1,30 @@
+{
+  "dataset_id": "celeb_df",
+  "official_source": "https://github.com/yuezunli/celeb-deepfakeforensics (CVPR 2020)",
+  "license": "Research and Educational Use Only",
+  "format": "MPEG-4 video frames, 1080p high resolution",
+  "leakage_policy": "Disjoint celebrity identity splitting: individuals in test videos are unseen during training.",
+  "splits": {
+    "train": {
+      "real_samples": 10000,
+      "synthetic_samples": 10000,
+      "class_ratio": "1.0 (50% real / 50% synthetic)",
+      "partition_strategy": "Stratified by generator model family"
+    },
+    "validation": {
+      "real_samples": 2000,
+      "synthetic_samples": 2000,
+      "class_ratio": "1.0"
+    },
+    "independent_test": {
+      "real_samples": 3000,
+      "synthetic_samples": 3000,
+      "class_ratio": "1.0",
+      "evaluation_conditions": [
+        "Full resolution (512x512)",
+        "Partial crops (128x128, 256x256)",
+        "JPEG compression (Q=50, Q=75, Q=90)"
+      ]
+    }
+  }
+}

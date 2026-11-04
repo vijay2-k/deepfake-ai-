@@ -20,7 +20,7 @@ export const ParticleWaveBackground: React.FC<ParticleWaveBackgroundProps> = ({
     let height = (canvas.height = window.innerHeight);
 
     let mouseX = width * 0.5;
-    let mouseY = height * 0.4;
+    let mouseY = height * 0.3;
     let targetMouseX = mouseX;
     let targetMouseY = mouseY;
 
@@ -38,97 +38,61 @@ export const ParticleWaveBackground: React.FC<ParticleWaveBackgroundProps> = ({
     window.addEventListener('resize', handleResize);
     window.addEventListener('mousemove', handleMouseMove);
 
-    // Particle Wave lines config
-    // 6 undulating wave ribbons:
-    // Waves 0 & 1: Amber / Orange accents on the left & lower hero (matching reference)
-    // Waves 2 & 3: Electric Cyan #00E5FF
-    // Waves 4 & 5: Violet #8B5CF6 and Electric Blue #267CFF
-    const waveCount = 5;
-    const pointsPerWave = 90;
-
+    // Ethereal purple and cyan wave lines
+    const waveCount = 4;
+    const pointsPerWave = 80;
     let time = 0;
 
     const render = () => {
-      time += 0.015;
+      time += 0.012;
       mouseX += (targetMouseX - mouseX) * 0.05;
       mouseY += (targetMouseY - mouseY) * 0.05;
 
       ctx.clearRect(0, 0, width, height);
 
-      // 1. Subtle radial ambient glows
-      // Cyan glow top-right
-      const cyanGlow = ctx.createRadialGradient(
-        width * 0.75,
-        height * 0.25,
-        20,
-        width * 0.75,
-        height * 0.25,
-        width * 0.5
-      );
-      cyanGlow.addColorStop(0, 'rgba(0, 229, 255, 0.07)');
-      cyanGlow.addColorStop(0.5, 'rgba(38, 124, 255, 0.03)');
-      cyanGlow.addColorStop(1, 'rgba(3, 7, 18, 0)');
-      ctx.fillStyle = cyanGlow;
-      ctx.fillRect(0, 0, width, height);
+      // Subtle atmospheric grid dots in soft lilac
+      ctx.fillStyle = 'rgba(85, 21, 216, 0.035)';
+      const dotSpacing = 36;
+      for (let x = 0; x < width; x += dotSpacing) {
+        for (let y = 0; y < height; y += dotSpacing) {
+          ctx.beginPath();
+          ctx.arc(x, y, 0.75, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
 
-      // Amber/Orange glow bottom-left (as in reference image)
-      const amberGlow = ctx.createRadialGradient(
-        width * 0.15,
-        height * 0.5,
-        10,
-        width * 0.15,
-        height * 0.5,
-        width * 0.45
-      );
-      amberGlow.addColorStop(0, 'rgba(255, 157, 50, 0.06)');
-      amberGlow.addColorStop(0.5, 'rgba(255, 120, 0, 0.02)');
-      amberGlow.addColorStop(1, 'rgba(3, 7, 18, 0)');
-      ctx.fillStyle = amberGlow;
-      ctx.fillRect(0, 0, width, height);
+      // 4 graceful flowing cybernetic lines in purple, violet & blue
+      const waveColors = [
+        { stroke: 'rgba(85, 21, 216, 0.12)', fill: 'rgba(139, 50, 255, 0.015)' },
+        { stroke: 'rgba(22, 119, 255, 0.10)', fill: 'rgba(22, 119, 255, 0.012)' },
+        { stroke: 'rgba(0, 217, 255, 0.09)', fill: 'rgba(0, 217, 255, 0.010)' },
+        { stroke: 'rgba(139, 50, 255, 0.10)', fill: 'rgba(85, 21, 216, 0.012)' },
+      ];
 
-      // 2. Draw Digital Particle Waves
       for (let w = 0; w < waveCount; w++) {
-        const isAmber = w < 2; // Left side warm particle wave
-        const isCyan = w >= 2 && w < 4;
-        const isViolet = w >= 4;
-
-        const baseColor = isAmber
-          ? '255, 157, 50'
-          : isCyan
-          ? '0, 229, 255'
-          : '139, 92, 246';
-
-        const waveY = height * (0.35 + w * 0.08);
-        const waveSpeed = 0.8 + w * 0.2;
-        const waveFreq = 0.0022 - w * 0.0003;
-        const waveAmp = 42 + w * 12;
+        const color = waveColors[w % waveColors.length];
+        const baseHeight = height * 0.35 + w * 45;
+        const speed = 0.5 + w * 0.2;
+        const amplitude = 30 + w * 12;
 
         ctx.beginPath();
-        const coords: { x: number; y: number; alpha: number; radius: number }[] = [];
+        ctx.strokeStyle = color.stroke;
+        ctx.fillStyle = color.fill;
+        ctx.lineWidth = 1.25;
 
         for (let i = 0; i <= pointsPerWave; i++) {
           const x = (i / pointsPerWave) * width;
-          const distToMouse = Math.hypot(x - mouseX, waveY - mouseY);
-          const mouseDisplace = Math.sin(Math.min(distToMouse * 0.008, Math.PI)) * 18;
+          const normalizedX = x / width;
+
+          // Multi-frequency wave calculation with smooth cursor deflection
+          const distToMouse = Math.hypot(x - mouseX, baseHeight - mouseY);
+          const mouseInfluence = Math.max(0, 1 - distToMouse / 350) * 20;
 
           const y =
-            waveY +
-            Math.sin(x * waveFreq + time * waveSpeed + w * 1.5) * waveAmp +
-            Math.cos(x * waveFreq * 1.8 - time * 0.5) * (waveAmp * 0.4) +
-            mouseDisplace;
-
-          // Fade out based on screen position
-          let alpha = 0.45;
-          if (isAmber) {
-            // Emphasize left side for amber wave
-            alpha = Math.max(0, 0.7 - (x / width) * 0.8);
-          } else {
-            // Emphasize right and center for cyan / violet
-            alpha = Math.min(0.7, 0.2 + (x / width) * 0.6);
-          }
-
-          const radius = (1.2 + Math.sin(x * 0.01 + time) * 0.6) * (1 + (w % 2) * 0.3);
-          coords.push({ x, y, alpha, radius });
+            baseHeight +
+            Math.sin(normalizedX * 6 + time * speed) * amplitude +
+            Math.cos(normalizedX * 10 - time * 0.7) * (amplitude * 0.35) -
+            mouseInfluence;
 
           if (i === 0) {
             ctx.moveTo(x, y);
@@ -137,29 +101,7 @@ export const ParticleWaveBackground: React.FC<ParticleWaveBackgroundProps> = ({
           }
         }
 
-        // Draw connecting thin laser line
-        ctx.strokeStyle = `rgba(${baseColor}, ${isAmber ? 0.15 : 0.18})`;
-        ctx.lineWidth = 1;
         ctx.stroke();
-
-        // Draw individual luminous dots along the wave
-        for (let j = 0; j < coords.length; j += 2) {
-          const p = coords[j];
-          if (p.alpha <= 0.03) continue;
-
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${baseColor}, ${p.alpha})`;
-          ctx.fill();
-
-          // Subtle glow on periodic nodes
-          if (j % 6 === 0) {
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius * 2.8, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${baseColor}, ${p.alpha * 0.28})`;
-            ctx.fill();
-          }
-        }
       }
 
       animationFrameId = requestAnimationFrame(render);
@@ -178,8 +120,7 @@ export const ParticleWaveBackground: React.FC<ParticleWaveBackgroundProps> = ({
     <canvas
       ref={canvasRef}
       className={`fixed inset-0 pointer-events-none z-0 ${className}`}
-      style={{ opacity: 0.88 }}
+      style={{ opacity: 0.85 }}
     />
   );
 };
-

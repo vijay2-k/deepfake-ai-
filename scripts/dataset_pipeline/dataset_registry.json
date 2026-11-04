@@ -1,0 +1,201 @@
+{
+  "image_datasets": [
+    {
+      "id": "genimage",
+      "name": "GenImage: A Million-Scale Benchmark for Image Generation Detection",
+      "official_source": "https://github.com/GenImage-Dataset/GenImage (NeurIPS 2023)",
+      "license": "Creative Commons Attribution-NonCommercial 4.0 (CC BY-NC 4.0)",
+      "format": "RGB PNG/JPEG images (512x512, 1024x1024)",
+      "labels": {
+        "0": "Real (ImageNet authentic photographs)",
+        "1": "Synthetic (Midjourney, Stable Diffusion v1.4/v1.5/v2.1, SDXL, GLIDE, VQDM, Wukong, ADM)"
+      },
+      "sample_count": "1,331,167 images (8 generator subsets)",
+      "limitations": [
+        "Synthetic images generated from fixed ImageNet class prompts; does not cover multi-subject narrative compositions.",
+        "Early diffusion models over-represented; requires supplement for newest flow-matching architectures (Flux, SD3)."
+      ],
+      "leakage_prevention": "Strict ImageNet synset class-level partitioning between train and test splits. Zero prompt overlap across splits.",
+      "balancing_strategy": "1:1 real-to-synthetic ratio maintained across every generator subset."
+    },
+    {
+      "id": "cifake",
+      "name": "CIFAKE: Real and AI-Generated Synthetic Images",
+      "official_source": "https://www.kaggle.com/datasets/birdy654/cifake-real-and-ai-generated-synthetic-images",
+      "license": "Open Data Commons Open Database License (ODbL) v1.0",
+      "format": "32x32 RGB PNG (Upscaled variants available)",
+      "labels": {
+        "0": "REAL (CIFAR-10 authentic natural images)",
+        "1": "FAKE (Stable Diffusion v1.4 generated counterparts)"
+      },
+      "sample_count": "120,000 images (60,000 train real, 60,000 train fake)",
+      "limitations": [
+        "Low spatial resolution (32x32) limits microscopic sensor noise analysis.",
+        "Single generator model (Stable Diffusion v1.4 only)."
+      ],
+      "leakage_prevention": "Separate official train (100k) and test (20k) sets with verified zero image overlap.",
+      "balancing_strategy": "Exactly 50% real and 50% fake."
+    },
+    {
+      "id": "faceforensics_plus_plus",
+      "name": "FaceForensics++: Learning to Detect Manipulated Facial Images",
+      "official_source": "https://github.com/ondyari/FaceForensics (ICCV 2019, Technical University of Munich)",
+      "license": "Academic Non-Commercial Research Use Only",
+      "format": "H.264 video frames and lossless PNG face extractions",
+      "labels": {
+        "0": "Original / Pristine YouTube facial video frames",
+        "1": "Manipulated (Deepfakes, Face2Face, FaceSwap, NeuralTextures, FaceShifter)"
+      },
+      "sample_count": "1,000 pristine sequences, 5,000 manipulated sequences, >1.8M frames",
+      "limitations": [
+        "Face manipulation specific; does not evaluate full-scene diffusion models.",
+        "Compression artifacts (C23 raw vs C40 heavy) can act as spurious shortcut features if unnormalized."
+      ],
+      "leakage_prevention": "Actor/video-level separation (720 train, 140 val, 140 test videos). Frames from the same video are strictly forbidden from spanning train and test.",
+      "balancing_strategy": "Equalized frame sampling across original and 5 manipulation methodologies."
+    },
+    {
+      "id": "celeb_df",
+      "name": "Celeb-DF (v2): Large-scale Challenging Deepfake Dataset",
+      "official_source": "https://github.com/yuezunli/celeb-deepfakeforensics (CVPR 2020)",
+      "license": "Research and Educational Use Only",
+      "format": "MPEG-4 video frames, 1080p high resolution",
+      "labels": {
+        "0": "Celebrity authentic YouTube interview recordings",
+        "1": "High-quality deepfake face swaps generated with improved synthesis"
+      },
+      "sample_count": "5,639 videos (590 real, 5,049 deepfake)",
+      "limitations": [
+        "Imbalanced raw ratio (9:1 fake to real); requires subsampling or weighted loss.",
+        "Subject matter restricted to celebrity interview lighting and framing."
+      ],
+      "leakage_prevention": "Disjoint celebrity identity splitting: individuals in test videos are unseen during training.",
+      "balancing_strategy": "Stratified random subsampling of fake videos to match authentic video duration."
+    },
+    {
+      "id": "dfdc",
+      "name": "DeepFake Detection Challenge Dataset (DFDC)",
+      "official_source": "https://www.kaggle.com/c/deepfake-detection-challenge (Meta, AWS, Microsoft, Partnership on AI)",
+      "license": "DFDC Competition License (Research and Evaluation Permitted)",
+      "format": "Full HD MP4 video, varied frame rates and ambient lighting",
+      "labels": {
+        "0": "Original actor recordings (consenting paid actors)",
+        "1": "Manipulated (Deepfake, GAN, audio swap, face swap)"
+      },
+      "sample_count": "124,000+ videos across 3,426 actors",
+      "limitations": [
+        "Massive storage footprint (>470GB compressed).",
+        "Varied video codecs and intentional post-processing perturbations (rotation, noise, compression)."
+      ],
+      "leakage_prevention": "Actor-isolated partitioning. Consenting subjects in the evaluation split do not appear in training.",
+      "balancing_strategy": "Per-actor paired real/synthetic balanced training batches."
+    }
+  ],
+  "voice_datasets": [
+    {
+      "id": "asvspoof_2019",
+      "name": "ASVspoof 2019: Automatic Speaker Verification Spoofing and Countermeasures",
+      "official_source": "https://www.asvspoof.org/ (Interspeech / University of Edinburgh)",
+      "license": "Open Data Commons Attribution License (ODC-By v1.0)",
+      "format": "16-bit 16kHz Linear PCM FLAC / WAV",
+      "labels": {
+        "bonafide": "Genuine human speaker recordings (VCTK corpus)",
+        "spoof": "Synthetic speech (TTS algorithms A01-A06, Voice Conversion A07-A19)"
+      },
+      "sample_count": "121,461 audio utterances across Logical Access (LA) and Physical Access (PA)",
+      "limitations": [
+        "Training partition only contains older parametric/concatenative algorithms; neural vocoders (WaveNet/HiFi-GAN) only appear in the evaluation set.",
+        "Acoustic room impulse response is uniform across VCTK recordings."
+      ],
+      "leakage_prevention": "Speaker-disjoint partitioning: zero speaker overlap between training (20 speakers), development (10 speakers), and evaluation (48 speakers).",
+      "balancing_strategy": "Subsampling of bonafide utterances to balance 1:4 raw spoofing distribution during metric calculation."
+    },
+    {
+      "id": "asvspoof_2021",
+      "name": "ASVspoof 2021: Deepfake and Logical Access Evaluation",
+      "official_source": "https://www.asvspoof.org/index2021.html (ASVspoof Consortium)",
+      "license": "ODC-By v1.0 Academic Research License",
+      "format": "16kHz FLAC audio with real-world telephony and IP compression (VoIP, MP3, OPUS)",
+      "labels": {
+        "bonafide": "Authentic human speech under lossy transmission",
+        "spoof": "State-of-the-art TTS and neural voice conversion transmitted over realistic channels"
+      },
+      "sample_count": "611,829 evaluation utterances across LA, PA, and DF (Deepfake) tracks",
+      "limitations": [
+        "Lossy codec transcoding (AAC, Opus, MP3 at 8-64kbps) can obscure high-frequency vocoder cues.",
+        "Labels for evaluation track released as un-blinded research keys."
+      ],
+      "leakage_prevention": "Evaluates generalization across unseen compression codecs and transmission networks.",
+      "balancing_strategy": "Equal error rate (min t-DCF and EER) calculated with standardized prior weights."
+    },
+    {
+      "id": "wavefake",
+      "name": "WaveFake: A Data Set to Facilitate Audio Deepfake Detection",
+      "official_source": "https://github.com/Jenthe-B/wavefake (ACM MM 2021)",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "format": "16kHz / 22.05kHz 16-bit Mono WAV",
+      "labels": {
+        "bonafide": "Authentic speech from LJSpeech (English) and JSUT (Japanese)",
+        "spoof": "Generated via MelGAN, Parallel WaveGAN, Multi-band MelGAN, HiFi-GAN, WaveGlow"
+      },
+      "sample_count": "117,985 audio clips (16,283 real, 101,702 synthetic)",
+      "limitations": [
+        "Single-speaker English base (LJSpeech) and Japanese base (JSUT); lack of multi-accent speaker diversity.",
+        "Clean studio conditions without realistic background noise."
+      ],
+      "leakage_prevention": "Sentence/utterance-level disjoint splitting. Zero text prompt overlap between training and testing.",
+      "balancing_strategy": "Downsampling synthetic vocoder samples to achieve 1:1 parity with authentic utterances."
+    },
+    {
+      "id": "fakeavceleb",
+      "name": "FakeAVCeleb: A Novel Audio-Video Multimodal Deepfake Dataset",
+      "official_source": "https://github.com/DASH-Lab/FakeAVCeleb (NeurIPS 2021, DASH Lab)",
+      "license": "CC BY-NC 4.0 Research License",
+      "format": "16kHz 16-bit audio extracted from MP4 video",
+      "labels": {
+        "RealVideo-RealAudio": "Authentic human speech and synchronized video",
+        "FakeVideo-RealAudio": "Facial deepfake with authentic original speech",
+        "RealVideo-FakeAudio": "Original video with cloned synthetic audio (SV2TTS / Real-Time Voice Cloning)",
+        "FakeVideo-FakeAudio": "Both visual and vocal deepfake synthesized"
+      },
+      "sample_count": "21,566 multimodal clips across 500 ethnic and gender diverse subjects",
+      "limitations": [
+        "Audio synthesis primarily uses SV2TTS; fewer diffusion vocoder samples.",
+        "Occasional YouTube background audio cross-talk."
+      ],
+      "leakage_prevention": "Subject ethnic and speaker demographic isolation between train and evaluation partitions.",
+      "balancing_strategy": "Separate evaluation of RealAudio vs FakeAudio subsets."
+    },
+    {
+      "id": "mlaad",
+      "name": "MLAAD: Multi-Language Audio Anti-Spoofing Dataset",
+      "official_source": "https://github.com/DCASE-Community/MLAAD (DCASE / IEEE 2023)",
+      "license": "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)",
+      "format": "16kHz / 24kHz FLAC audio spanning 10 languages",
+      "labels": {
+        "bonafide": "Native speakers across 10 global languages (English, German, French, Spanish, Chinese, Arabic, Hindi, Russian, etc.)",
+        "spoof": "Synthetic speech generated by multilingual neural TTS (VITS, XTTS, ElevenLabs, YourTTS)"
+      },
+      "sample_count": "95,000 utterances across diverse accents and acoustic room reverberations",
+      "limitations": [
+        "Variable sampling rates (16kHz to 24kHz) require strict resample preprocessing to prevent bandwidth leakage.",
+        "Language-specific phonetic differences can influence spectral centroid baselines."
+      ],
+      "leakage_prevention": "Language-balanced speaker-independent 80/10/10 split.",
+      "balancing_strategy": "Uniform utterance duration weighting (2.0s - 8.0s normalized)."
+    }
+  ],
+  "out_of_distribution_eval_dataset": {
+    "name": "KRYPTX Independent OOD Forensic Evaluation Suite",
+    "description": "Evaluation set containing samples from AI generators and acoustic conditions deliberately withheld from training data.",
+    "image_unseen_generators": ["Flux.1-Dev", "Ideogram v2", "Midjourney v6.1", "Stable Diffusion 3.5 Large", "Recraft v3"],
+    "voice_unseen_generators": ["ElevenLabs Multilingual v2", "Chatterbox TTS", "OpenAI TTS-1-HD", "Tortoise-TTS v2", "RVC v2 (Retrieval-based Voice Conversion)"],
+    "adverse_conditions": [
+      "Heavy social media JPEG compression (Q=50, Q=35)",
+      "Spatial crops (< 256x256 and < 140x140)",
+      "Short audio durations (0.8s, 1.2s, 1.8s, 3.5s)",
+      "Acoustic noise injection (White noise, babble noise, telephonic bandpass 300Hz-3.4kHz)"
+    ]
+  }
+}
+

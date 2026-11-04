@@ -36,7 +36,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({ stats, records }
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-8 space-y-8 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#E4DEFF]">
         <div>
           <div className="flex items-center gap-2">
             <BarChart3 className="w-6 h-6 text-indigo-400" />
@@ -60,7 +60,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({ stats, records }
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Scans */}
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-lg">
+        <div className="p-5 rounded-2xl bg-white border border-[#E4DEFF] shadow-lg">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-bold uppercase tracking-wider">Total Scans</span>
             <Activity className="w-4 h-4 text-indigo-400" />
@@ -70,7 +70,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({ stats, records }
         </div>
 
         {/* AI Synthetic Rate */}
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-lg">
+        <div className="p-5 rounded-2xl bg-white border border-[#E4DEFF] shadow-lg">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-bold uppercase tracking-wider">AI Detected</span>
             <Bot className="w-4 h-4 text-rose-400" />
@@ -83,7 +83,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({ stats, records }
         </div>
 
         {/* Real Photographs */}
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-lg">
+        <div className="p-5 rounded-2xl bg-white border border-[#E4DEFF] shadow-lg">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-bold uppercase tracking-wider">Authentic Real</span>
             <Camera className="w-4 h-4 text-emerald-400" />
@@ -96,7 +96,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({ stats, records }
         </div>
 
         {/* Inconclusive / Ambiguous */}
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-lg">
+        <div className="p-5 rounded-2xl bg-white border border-[#E4DEFF] shadow-lg">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-bold uppercase tracking-wider">Inconclusive</span>
             <AlertTriangle className="w-4 h-4 text-amber-400" />
@@ -112,13 +112,13 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({ stats, records }
       {/* Model Distribution & Reliability */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Distribution Bar */}
-        <div className="lg:col-span-2 bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-xl space-y-4">
+        <div className="lg:col-span-2 bg-white rounded-2xl border border-[#E4DEFF] p-6 shadow-xl space-y-4">
           <h3 className="text-sm font-bold text-white flex items-center justify-between">
             <span>Classification Distribution</span>
             <span className="text-xs text-slate-400 font-mono">Sample Size: {records.length}</span>
           </h3>
 
-          <div className="w-full h-5 rounded-full bg-slate-950 flex overflow-hidden p-0.5 border border-slate-800">
+          <div className="w-full h-5 rounded-full bg-white flex overflow-hidden p-0.5 border border-[#E4DEFF]">
             <div
               style={{ width: `${aiPercent}%` }}
               className="bg-rose-500 h-full rounded-l-full transition-all"
@@ -153,25 +153,25 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({ stats, records }
         </div>
 
         {/* Engine Specs */}
-        <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-xl space-y-3">
+        <div className="bg-white rounded-2xl border border-[#E4DEFF] p-6 shadow-xl space-y-3">
           <h3 className="text-sm font-bold text-white flex items-center gap-2">
             <Cpu className="w-4 h-4 text-cyan-400" />
             Detection Engine Diagnostics
           </h3>
           <div className="space-y-2 text-xs font-mono">
-            <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 flex justify-between">
+            <div className="p-2.5 rounded-lg bg-white border border-[#E4DEFF] flex justify-between">
               <span className="text-slate-400">Core Model:</span>
               <span className="text-indigo-400 font-bold">gemini-3.8-flash</span>
             </div>
-            <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 flex justify-between">
+            <div className="p-2.5 rounded-lg bg-white border border-[#E4DEFF] flex justify-between">
               <span className="text-slate-400">Average Confidence:</span>
               <span className="text-emerald-400 font-bold">{avgConfidence}%</span>
             </div>
-            <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 flex justify-between">
+            <div className="p-2.5 rounded-lg bg-white border border-[#E4DEFF] flex justify-between">
               <span className="text-slate-400">Median Latency:</span>
               <span className="text-slate-200">~1.4s</span>
             </div>
-            <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 flex justify-between">
+            <div className="p-2.5 rounded-lg bg-white border border-[#E4DEFF] flex justify-between">
               <span className="text-slate-400">EXIF Parser:</span>
               <span className="text-slate-200">exifr v7.1.3 (Pure JS)</span>
             </div>
@@ -180,7 +180,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({ stats, records }
       </div>
 
       {/* Recent Activity Ledger */}
-      <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-xl space-y-4">
+      <div className="bg-white rounded-2xl border border-[#E4DEFF] p-6 shadow-xl space-y-4">
         <h3 className="text-sm font-bold text-white flex items-center gap-2">
           <Clock className="w-4 h-4 text-indigo-400" />
           Recent Forensic Audit Stream
@@ -191,7 +191,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({ stats, records }
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="text-[11px] text-slate-400 uppercase border-b border-slate-800 font-mono">
+              <thead className="text-[11px] text-slate-400 uppercase border-b border-[#E4DEFF] font-mono">
                 <tr>
                   <th className="pb-3">Case ID</th>
                   <th className="pb-3">Target File</th>
@@ -206,7 +206,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({ stats, records }
                   const isAI = r.detection_result === 'Likely AI Generated';
                   const isReal = r.detection_result === 'Likely Real Photograph';
                   return (
-                    <tr key={r.id} className="hover:bg-slate-800/30 transition-colors">
+                    <tr key={r.id} className="hover:bg-[#0B3526]/60 transition-colors">
                       <td className="py-2.5 text-slate-400 font-mono">#{r.id.slice(5, 13)}</td>
                       <td className="py-2.5 text-white font-medium truncate max-w-[200px]">
                         {r.image_name}

@@ -1,0 +1,31 @@
+{
+  "dataset_id": "wavefake",
+  "official_source": "https://github.com/Jenthe-B/wavefake (ACM MM 2021)",
+  "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+  "format": "16kHz / 22.05kHz 16-bit Mono WAV",
+  "leakage_policy": "Sentence/utterance-level disjoint splitting. Zero text prompt overlap between training and testing.",
+  "splits": {
+    "train": {
+      "bonafide_samples": 8000,
+      "spoof_samples": 8000,
+      "speakers_count": 150,
+      "partition_strategy": "Strict speaker-independent isolation"
+    },
+    "validation": {
+      "bonafide_samples": 1500,
+      "spoof_samples": 1500,
+      "speakers_count": 30
+    },
+    "independent_test": {
+      "bonafide_samples": 2500,
+      "spoof_samples": 2500,
+      "speakers_count": 50,
+      "evaluation_conditions": [
+        "Short clips (< 1.5s speech)",
+        "Standard clips (1.5s - 5.0s speech)",
+        "Long recordings (> 5.0s speech)",
+        "Acoustic noise (Clean SNR > 25dB, Moderate SNR 15dB, Heavy SNR 6dB)"
+      ]
+    }
+  }
+}

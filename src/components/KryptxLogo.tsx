@@ -19,94 +19,51 @@ export const KryptxSymbol: React.FC<{ size?: number; className?: string }> = ({
       viewBox="0 0 100 100"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`transition-all duration-300 drop-shadow-[0_0_12px_rgba(0,229,255,0.45)] hover:drop-shadow-[0_0_20px_rgba(139,92,246,0.65)] ${className}`}
+      className={`transition-all duration-300 drop-shadow-[0_2px_10px_rgba(85,21,216,0.25)] hover:drop-shadow-[0_4px_16px_rgba(85,21,216,0.45)] ${className}`}
     >
       <defs>
-        {/* Holographic Cyan-to-Violet Gradient */}
-        <linearGradient id="kryptx-grad-1" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#00E5FF" />
-          <stop offset="45%" stopColor="#267CFF" />
-          <stop offset="100%" stopColor="#8B5CF6" />
+        {/* Primary Purple to Electric Blue Gradient */}
+        <linearGradient id="kryptx-grad-main" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#5515D8" />
+          <stop offset="50%" stopColor="#7B2BFF" />
+          <stop offset="100%" stopColor="#1677FF" />
         </linearGradient>
 
-        {/* Upper Shard Electric Gradient */}
+        {/* Upper Shard Cyan-Blue Accent Gradient */}
         <linearGradient id="kryptx-grad-upper" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#267CFF" />
-          <stop offset="60%" stopColor="#00E5FF" />
-          <stop offset="100%" stopColor="#E0F7FF" />
+          <stop offset="0%" stopColor="#3210A8" />
+          <stop offset="60%" stopColor="#5515D8" />
+          <stop offset="100%" stopColor="#00D9FF" />
         </linearGradient>
 
-        {/* Lower Shard Violet Gradient */}
+        {/* Lower Shard Deep Violet Gradient */}
         <linearGradient id="kryptx-grad-lower" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#8B5CF6" />
-          <stop offset="70%" stopColor="#6366F1" />
-          <stop offset="100%" stopColor="#00E5FF" />
+          <stop offset="0%" stopColor="#1F0866" />
+          <stop offset="70%" stopColor="#5515D8" />
+          <stop offset="100%" stopColor="#8B32FF" />
         </linearGradient>
-
-        {/* Accent Glow Filter */}
-        <filter id="kryptx-glow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="3" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
       </defs>
 
-      {/* Hexagonal / Diamond Framing Matrix Guide (subtle cyber grid) */}
-      <polygon
-        points="50,4 92,26 92,74 50,96 8,74 8,26"
-        fill="none"
-        stroke="rgba(0, 229, 255, 0.12)"
-        strokeWidth="1.2"
-        strokeDasharray="4 3"
+      {/* Main Left Pillar */}
+      <path
+        d="M22 14C22 11.7909 23.7909 10 26 10H36C38.2091 10 40 11.7909 40 14V86C40 88.2091 38.2091 90 36 90H26C23.7909 90 22 88.2091 22 86V14Z"
+        fill="url(#kryptx-grad-main)"
       />
 
-      {/* Geometric K - Vertical Spine Prism with Precision Chamfers */}
+      {/* Upper Diagonal Shard */}
       <path
-        d="M 22 14 L 38 14 L 38 86 L 22 86 L 22 14 Z"
-        fill="url(#kryptx-grad-1)"
-        className="opacity-95"
-      />
-      {/* Precision Chamfered Highlight Edge */}
-      <path
-        d="M 22 14 L 28 8 L 38 14 L 32 86 L 22 86 Z"
-        fill="#FFFFFF"
-        opacity="0.18"
-      />
-
-      {/* Geometric K - Upper Diagonal Shard (Angled Precision Cut) */}
-      <path
-        d="M 43 47 L 76 16 L 89 25 L 53 57 Z"
+        d="M44 48L68 18C69.5 16 72 15 74.5 15H83C85.5 15 87 18 85.5 20L58 55L44 48Z"
         fill="url(#kryptx-grad-upper)"
       />
-      {/* Upper shard neon light edge */}
-      <line
-        x1="76"
-        y1="16"
-        x2="89"
-        y2="25"
-        stroke="#E0F7FF"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        filter="url(#kryptx-glow)"
-      />
 
-      {/* Geometric K - Lower Diagonal Shard (Cyber Prism Cut) */}
+      {/* Lower Diagonal Shard */}
       <path
-        d="M 46 48 L 74 84 L 88 74 L 57 40 Z"
+        d="M52 46L82 82C83.5 84 82 87 79.5 87H70C67.5 87 65.5 86 64 84L42 56L52 46Z"
         fill="url(#kryptx-grad-lower)"
       />
 
-      {/* Interconnecting Digital Quantum Node at the Nexus */}
-      <polygon
-        points="43,45 55,38 60,49 48,56"
-        fill="#00E5FF"
-        opacity="0.9"
-        filter="url(#kryptx-glow)"
-      />
-
-      {/* Holographic Quantum Dot / Center Target */}
-      <circle cx="51" cy="47" r="2.2" fill="#FFFFFF" />
-      <circle cx="82" cy="20" r="1.5" fill="#00E5FF" />
-      <circle cx="81" cy="79" r="1.5" fill="#8B5CF6" />
+      {/* Optical Core Specular Accent */}
+      <circle cx="50" cy="50" r="3" fill="#00D9FF" opacity="0.9" />
     </svg>
   );
 };
@@ -118,12 +75,14 @@ export const KryptxLogo: React.FC<KryptxLogoProps> = ({
   className = '',
   onClick,
 }) => {
-  const pixelSize = {
-    sm: 28,
-    md: 38,
-    lg: 48,
-    xl: 60,
-  }[size];
+  const sizeMap = {
+    sm: { symbol: 26, text: 'text-base', sub: 'text-[8px]' },
+    md: { symbol: 34, text: 'text-xl', sub: 'text-[9px]' },
+    lg: { symbol: 42, text: 'text-2xl', sub: 'text-[10px]' },
+    xl: { symbol: 54, text: 'text-3xl', sub: 'text-[11px]' },
+  };
+
+  const config = sizeMap[size];
 
   return (
     <div
@@ -132,31 +91,25 @@ export const KryptxLogo: React.FC<KryptxLogoProps> = ({
         onClick ? 'cursor-pointer group' : ''
       } ${className}`}
     >
-      {/* Standalone Geometric K Symbol */}
-      <div className="relative flex items-center justify-center p-1 rounded-xl bg-gradient-to-br from-cyan-500/10 via-transparent to-violet-500/10 border border-cyan-500/20 group-hover:border-cyan-400/50 group-hover:bg-cyan-500/10 transition-all duration-300">
-        <KryptxSymbol size={pixelSize} />
-      </div>
+      <KryptxSymbol size={config.symbol} />
 
-      {/* Wordmark & Category */}
       {showWordmark && (
         <div className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <span className="font-heading font-extrabold tracking-wider text-white text-lg sm:text-xl leading-none flex items-center">
-              KRYPT<span className="text-[#00E5FF] group-hover:text-cyan-300 transition-colors">X</span>
-            </span>
-            <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-mono tracking-widest font-semibold uppercase bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-              FORENSICS
+          <div className="flex items-center gap-1.5">
+            <span
+              className={`font-heading font-extrabold ${config.text} tracking-tight text-[#10132F] transition-colors`}
+            >
+              KRYPTX
             </span>
           </div>
 
-          {showCategory && (
-            <span className="text-[10px] font-mono tracking-widest text-slate-400 uppercase font-medium mt-0.5">
-              Multimodal Forensic Intelligence
-            </span>
-          )}
+          <div
+            className={`font-mono font-bold ${config.sub} tracking-[0.24em] text-[#525779] uppercase`}
+          >
+            FORENSICS
+          </div>
         </div>
       )}
     </div>
   );
 };
-

@@ -1,0 +1,31 @@
+{
+  "dataset_id": "fakeavceleb",
+  "official_source": "https://github.com/DASH-Lab/FakeAVCeleb (NeurIPS 2021, DASH Lab)",
+  "license": "CC BY-NC 4.0 Research License",
+  "format": "16kHz 16-bit audio extracted from MP4 video",
+  "leakage_policy": "Subject ethnic and speaker demographic isolation between train and evaluation partitions.",
+  "splits": {
+    "train": {
+      "bonafide_samples": 8000,
+      "spoof_samples": 8000,
+      "speakers_count": 150,
+      "partition_strategy": "Strict speaker-independent isolation"
+    },
+    "validation": {
+      "bonafide_samples": 1500,
+      "spoof_samples": 1500,
+      "speakers_count": 30
+    },
+    "independent_test": {
+      "bonafide_samples": 2500,
+      "spoof_samples": 2500,
+      "speakers_count": 50,
+      "evaluation_conditions": [
+        "Short clips (< 1.5s speech)",
+        "Standard clips (1.5s - 5.0s speech)",
+        "Long recordings (> 5.0s speech)",
+        "Acoustic noise (Clean SNR > 25dB, Moderate SNR 15dB, Heavy SNR 6dB)"
+      ]
+    }
+  }
+}

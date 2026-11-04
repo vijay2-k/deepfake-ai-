@@ -75,7 +75,7 @@ WITH CHECK (bucket_id = 'image-forensics' AND (storage.foldername(name))[1] = au
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-8 space-y-8 animate-fade-in">
       {/* Header */}
-      <div className="border-b border-slate-800 pb-6">
+      <div className="border-b border-[#E4DEFF] pb-6">
         <div className="flex items-center gap-2">
           <Database className="w-6 h-6 text-indigo-400" />
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
@@ -88,14 +88,14 @@ WITH CHECK (bucket_id = 'image-forensics' AND (storage.foldername(name))[1] = au
       </div>
 
       {/* Architecture Flow Diagram */}
-      <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-xl">
+      <div className="bg-white rounded-2xl border border-[#E4DEFF] p-6 shadow-xl">
         <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
           <Layers className="w-4 h-4 text-cyan-400" />
           Secure Data Pipeline
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
-          <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 flex flex-col justify-between">
+          <div className="p-4 rounded-xl bg-white border border-[#E4DEFF] flex flex-col justify-between">
             <span className="text-[10px] uppercase font-bold text-slate-500">Tier 1</span>
             <div className="font-bold text-white text-sm my-2">Client Frontend</div>
             <p className="text-[11px] text-slate-400">
@@ -111,7 +111,7 @@ WITH CHECK (bucket_id = 'image-forensics' AND (storage.foldername(name))[1] = au
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 flex flex-col justify-between">
+          <div className="p-4 rounded-xl bg-white border border-[#E4DEFF] flex flex-col justify-between">
             <span className="text-[10px] uppercase font-bold text-slate-500">Tier 3: Database</span>
             <div className="font-bold text-white text-sm my-2">Supabase PostgreSQL</div>
             <p className="text-[11px] text-slate-400">
@@ -119,7 +119,7 @@ WITH CHECK (bucket_id = 'image-forensics' AND (storage.foldername(name))[1] = au
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 flex flex-col justify-between">
+          <div className="p-4 rounded-xl bg-white border border-[#E4DEFF] flex flex-col justify-between">
             <span className="text-[10px] uppercase font-bold text-slate-500">Tier 4: Storage</span>
             <div className="font-bold text-white text-sm my-2">Supabase Storage</div>
             <p className="text-[11px] text-slate-400">
@@ -130,7 +130,7 @@ WITH CHECK (bucket_id = 'image-forensics' AND (storage.foldername(name))[1] = au
       </div>
 
       {/* SQL Migration Code Block */}
-      <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-xl space-y-4">
+      <div className="bg-white rounded-2xl border border-[#E4DEFF] p-6 shadow-xl space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-sm font-bold text-white">PostgreSQL Migration & RLS Script</h3>
@@ -145,7 +145,7 @@ WITH CHECK (bucket_id = 'image-forensics' AND (storage.foldername(name))[1] = au
           </button>
         </div>
 
-        <div className="relative bg-slate-950 rounded-xl border border-slate-800 p-4 overflow-x-auto max-h-[360px]">
+        <div className="relative bg-white rounded-xl border border-[#E4DEFF] p-4 overflow-x-auto max-h-[360px]">
           <pre className="text-xs font-mono text-cyan-300 whitespace-pre leading-relaxed">
             {sqlScript}
           </pre>
@@ -153,7 +153,7 @@ WITH CHECK (bucket_id = 'image-forensics' AND (storage.foldername(name))[1] = au
       </div>
 
       {/* Optional Remote Sync Configuration */}
-      <div className="bg-slate-900/60 rounded-2xl border border-slate-800 p-6 space-y-4">
+      <div className="bg-[#F8F7FF] rounded-2xl border border-[#E4DEFF] p-6 space-y-4">
         <h3 className="text-sm font-bold text-white flex items-center gap-2">
           <Lock className="w-4 h-4 text-emerald-400" />
           Connect Your Supabase Project (Optional Mirroring)
@@ -172,7 +172,7 @@ WITH CHECK (bucket_id = 'image-forensics' AND (storage.foldername(name))[1] = au
               placeholder="https://xyzcompany.supabase.co"
               value={supabaseUrl}
               onChange={(e) => setSupabaseUrl(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
+              className="w-full bg-white border border-[#E4DEFF] rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-[#5515D8]"
             />
           </div>
 
@@ -185,7 +185,7 @@ WITH CHECK (bucket_id = 'image-forensics' AND (storage.foldername(name))[1] = au
               placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
               value={supabaseAnonKey}
               onChange={(e) => setSupabaseAnonKey(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
+              className="w-full bg-white border border-[#E4DEFF] rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-[#5515D8]"
             />
           </div>
         </div>
@@ -193,7 +193,7 @@ WITH CHECK (bucket_id = 'image-forensics' AND (storage.foldername(name))[1] = au
         <div className="flex items-center justify-between pt-2">
           <button
             onClick={handleTestConnection}
-            className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white transition-all cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-[#0B3526] hover:bg-slate-700 text-xs font-bold text-white transition-all cursor-pointer"
           >
             Verify & Connect Supabase
           </button>

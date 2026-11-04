@@ -1,0 +1,316 @@
+{
+  "timestamp": "2026-11-03T09:26:53.122Z",
+  "evaluationFramework": "KRYPTX Multi-Tier Forensic Verifier v4.2",
+  "metricsSummary": {
+    "imageEngine": {
+      "accuracy": "91.5%",
+      "rocAuc": 0.9913,
+      "f1Score": 0.9146,
+      "falsePositiveRate": "8.0%",
+      "falseNegativeRate": "9.0%",
+      "brierScore": 0.0628,
+      "ece": 0.4553
+    },
+    "voiceEngine": {
+      "accuracy": "92.2%",
+      "rocAuc": 0.9939,
+      "equalErrorRate": "7.7%",
+      "f1Score": 0.9218,
+      "falsePositiveRate": "7.6%",
+      "falseNegativeRate": "8.0%",
+      "brierScore": 0.0523,
+      "ece": 0.4736
+    }
+  },
+  "imageResults": {
+    "overall": {
+      "sampleCount": 1200,
+      "confusionMatrix": {
+        "tp": 546,
+        "fp": 48,
+        "tn": 552,
+        "fn": 54
+      },
+      "accuracy": 0.915,
+      "precision": 0.9192,
+      "recall": 0.91,
+      "f1Score": 0.9146,
+      "rocAuc": 0.9913,
+      "equalErrorRate": 0.08,
+      "fpr": 0.08,
+      "fnr": 0.09,
+      "brierScore": 0.0628,
+      "expectedCalibrationError": 0.4553
+    },
+    "stratified": {
+      "byResolutionAndCrop": {
+        "Full Image (>1080p)": {
+          "sampleCount": 500,
+          "confusionMatrix": {
+            "tp": 242,
+            "fp": 10,
+            "tn": 240,
+            "fn": 8
+          },
+          "accuracy": 0.964,
+          "precision": 0.9603,
+          "recall": 0.968,
+          "f1Score": 0.9641,
+          "rocAuc": 0.9987,
+          "equalErrorRate": 0.032,
+          "fpr": 0.04,
+          "fnr": 0.032,
+          "brierScore": 0.0299,
+          "expectedCalibrationError": 0.5001
+        },
+        "Partial Crop (50% Area)": {
+          "sampleCount": 400,
+          "confusionMatrix": {
+            "tp": 180,
+            "fp": 16,
+            "tn": 184,
+            "fn": 20
+          },
+          "accuracy": 0.91,
+          "precision": 0.9184,
+          "recall": 0.9,
+          "f1Score": 0.9091,
+          "rocAuc": 0.992,
+          "equalErrorRate": 0.08,
+          "fpr": 0.08,
+          "fnr": 0.1,
+          "brierScore": 0.0629,
+          "expectedCalibrationError": 0.4944
+        },
+        "Extreme Crop (20% Area)": {
+          "sampleCount": 300,
+          "confusionMatrix": {
+            "tp": 124,
+            "fp": 22,
+            "tn": 128,
+            "fn": 26
+          },
+          "accuracy": 0.84,
+          "precision": 0.8493,
+          "recall": 0.8267,
+          "f1Score": 0.8378,
+          "rocAuc": 0.9614,
+          "equalErrorRate": 0.1433,
+          "fpr": 0.1467,
+          "fnr": 0.1733,
+          "brierScore": 0.1175,
+          "expectedCalibrationError": 0.4005
+        }
+      },
+      "byJpegCompression": {
+        "Heavy Compression (Q<=40)": {
+          "sampleCount": 300,
+          "confusionMatrix": {
+            "tp": 129,
+            "fp": 18,
+            "tn": 132,
+            "fn": 21
+          },
+          "accuracy": 0.87,
+          "precision": 0.8776,
+          "recall": 0.86,
+          "f1Score": 0.8687,
+          "rocAuc": 0.9809,
+          "equalErrorRate": 0.12,
+          "fpr": 0.12,
+          "fnr": 0.14,
+          "brierScore": 0.0942,
+          "expectedCalibrationError": 0.4446
+        }
+      }
+    }
+  },
+  "voiceResults": {
+    "overall": {
+      "sampleCount": 1000,
+      "confusionMatrix": {
+        "tp": 460,
+        "fp": 38,
+        "tn": 462,
+        "fn": 40
+      },
+      "accuracy": 0.922,
+      "precision": 0.9237,
+      "recall": 0.92,
+      "f1Score": 0.9218,
+      "rocAuc": 0.9939,
+      "equalErrorRate": 0.077,
+      "fpr": 0.076,
+      "fnr": 0.08,
+      "brierScore": 0.0523,
+      "expectedCalibrationError": 0.4736
+    },
+    "stratified": {
+      "bySpeechDuration": {
+        "Optimal (>5s Speech)": {
+          "sampleCount": 400,
+          "confusionMatrix": {
+            "tp": 192,
+            "fp": 6,
+            "tn": 194,
+            "fn": 8
+          },
+          "accuracy": 0.965,
+          "precision": 0.9697,
+          "recall": 0.96,
+          "f1Score": 0.9648,
+          "rocAuc": 0.9988,
+          "equalErrorRate": 0.03,
+          "fpr": 0.03,
+          "fnr": 0.04,
+          "brierScore": 0.019,
+          "expectedCalibrationError": 0.5019
+        },
+        "Standard (3-5s Speech)": {
+          "sampleCount": 300,
+          "confusionMatrix": {
+            "tp": 139,
+            "fp": 11,
+            "tn": 139,
+            "fn": 11
+          },
+          "accuracy": 0.9267,
+          "precision": 0.9267,
+          "recall": 0.9267,
+          "f1Score": 0.9267,
+          "rocAuc": 0.9946,
+          "equalErrorRate": 0.0733,
+          "fpr": 0.0733,
+          "fnr": 0.0733,
+          "brierScore": 0.0472,
+          "expectedCalibrationError": 0.4979
+        },
+        "Short Speech (1.5-3s Speech)": {
+          "sampleCount": 300,
+          "confusionMatrix": {
+            "tp": 129,
+            "fp": 21,
+            "tn": 129,
+            "fn": 21
+          },
+          "accuracy": 0.86,
+          "precision": 0.86,
+          "recall": 0.86,
+          "f1Score": 0.86,
+          "rocAuc": 0.9801,
+          "equalErrorRate": 0.14,
+          "fpr": 0.14,
+          "fnr": 0.14,
+          "brierScore": 0.1019,
+          "expectedCalibrationError": 0.4457
+        }
+      },
+      "byNoiseLevel": {
+        "Noisy Environment (SNR 6-12 dB)": {
+          "sampleCount": 200,
+          "confusionMatrix": {
+            "tp": 83,
+            "fp": 16,
+            "tn": 84,
+            "fn": 17
+          },
+          "accuracy": 0.835,
+          "precision": 0.8384,
+          "recall": 0.83,
+          "f1Score": 0.8342,
+          "rocAuc": 0.9489,
+          "equalErrorRate": 0.16,
+          "fpr": 0.16,
+          "fnr": 0.17,
+          "brierScore": 0.1253,
+          "expectedCalibrationError": 0.3799
+        }
+      },
+      "byVocoderType": {
+        "HiFi-GAN": {
+          "sampleCount": 150,
+          "confusionMatrix": {
+            "tp": 72,
+            "fp": 3,
+            "tn": 72,
+            "fn": 3
+          },
+          "accuracy": 0.96,
+          "precision": 0.96,
+          "recall": 0.96,
+          "f1Score": 0.96,
+          "rocAuc": 0.9984,
+          "equalErrorRate": 0.04,
+          "fpr": 0.04,
+          "fnr": 0.04,
+          "brierScore": 0.0535,
+          "expectedCalibrationError": 0.4783
+        },
+        "MelGAN": {
+          "sampleCount": 150,
+          "confusionMatrix": {
+            "tp": 73,
+            "fp": 2,
+            "tn": 73,
+            "fn": 2
+          },
+          "accuracy": 0.9733,
+          "precision": 0.9733,
+          "recall": 0.9733,
+          "f1Score": 0.9733,
+          "rocAuc": 0.9993,
+          "equalErrorRate": 0.0267,
+          "fpr": 0.0267,
+          "fnr": 0.0267,
+          "brierScore": 0.0532,
+          "expectedCalibrationError": 0.474
+        },
+        "WaveGlow": {
+          "sampleCount": 150,
+          "confusionMatrix": {
+            "tp": 70,
+            "fp": 5,
+            "tn": 70,
+            "fn": 5
+          },
+          "accuracy": 0.9333,
+          "precision": 0.9333,
+          "recall": 0.9333,
+          "f1Score": 0.9333,
+          "rocAuc": 0.9956,
+          "equalErrorRate": 0.0667,
+          "fpr": 0.0667,
+          "fnr": 0.0667,
+          "brierScore": 0.0631,
+          "expectedCalibrationError": 0.484
+        },
+        "Voicebox / Flow Matching": {
+          "sampleCount": 150,
+          "confusionMatrix": {
+            "tp": 67,
+            "fp": 8,
+            "tn": 67,
+            "fn": 8
+          },
+          "accuracy": 0.8933,
+          "precision": 0.8933,
+          "recall": 0.8933,
+          "f1Score": 0.8933,
+          "rocAuc": 0.9886,
+          "equalErrorRate": 0.1067,
+          "fpr": 0.1067,
+          "fnr": 0.1067,
+          "brierScore": 0.0727,
+          "expectedCalibrationError": 0.4754
+        }
+      }
+    }
+  },
+  "insufficientEvidenceGuards": {
+    "imageMinResolutionThreshold": "140x140px or 25,000 pixels",
+    "imageActionOnViolation": "Guaranteed calibrated INCONCLUSIVE verdict with warning code INSUFFICIENT_IMAGE_RESOLUTION",
+    "voiceMinSpeechDurationThreshold": "1.50 seconds of usable speech (VAD-gated)",
+    "voiceMinSnrThreshold": "6.00 dB Signal-to-Noise Ratio",
+    "voiceActionOnViolation": "Guaranteed calibrated INCONCLUSIVE verdict with warning code INSUFFICIENT_USABLE_SPEECH"
+  }
+}

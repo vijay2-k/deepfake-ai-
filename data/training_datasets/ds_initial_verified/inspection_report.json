@@ -1,0 +1,28 @@
+{
+  "dataset_id": "ds_initial_verified",
+  "source_path": "truelens-ai--main/data/training_datasets/initial_dataset_raw",
+  "is_archive": false,
+  "total_files_found": 21,
+  "valid_images": 21,
+  "corrupt_files_count": 0,
+  "corrupt_files": [],
+  "duplicate_images_count": 2,
+  "unique_image_families": 19,
+  "class_breakdown": {
+    "REAL": 9,
+    "AI_GENERATED": 9,
+    "AI_MODIFIED": 0,
+    "MANIPULATED": 3,
+    "UNKNOWN": 0
+  },
+  "split_breakdown": {
+    "train": 14,
+    "validation": 4,
+    "independent_test": 3
+  },
+  "anti_leakage_groups_count": 19,
+  "requires_label_clarification": false,
+  "unknown_samples_count": 0,
+  "manifest_path": "truelens-ai--main/data/training_datasets\\ds_initial_verified\\dataset_manifest.json",
+  "status": "ready_for_review"
+}

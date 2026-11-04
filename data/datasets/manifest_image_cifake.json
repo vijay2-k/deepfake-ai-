@@ -1,0 +1,30 @@
+{
+  "dataset_id": "cifake",
+  "official_source": "https://www.kaggle.com/datasets/birdy654/cifake-real-and-ai-generated-synthetic-images",
+  "license": "Open Data Commons Open Database License (ODbL) v1.0",
+  "format": "32x32 RGB PNG (Upscaled variants available)",
+  "leakage_policy": "Separate official train (100k) and test (20k) sets with verified zero image overlap.",
+  "splits": {
+    "train": {
+      "real_samples": 10000,
+      "synthetic_samples": 10000,
+      "class_ratio": "1.0 (50% real / 50% synthetic)",
+      "partition_strategy": "Stratified by generator model family"
+    },
+    "validation": {
+      "real_samples": 2000,
+      "synthetic_samples": 2000,
+      "class_ratio": "1.0"
+    },
+    "independent_test": {
+      "real_samples": 3000,
+      "synthetic_samples": 3000,
+      "class_ratio": "1.0",
+      "evaluation_conditions": [
+        "Full resolution (512x512)",
+        "Partial crops (128x128, 256x256)",
+        "JPEG compression (Q=50, Q=75, Q=90)"
+      ]
+    }
+  }
+}

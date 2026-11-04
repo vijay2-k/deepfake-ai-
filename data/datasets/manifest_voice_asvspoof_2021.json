@@ -1,0 +1,31 @@
+{
+  "dataset_id": "asvspoof_2021",
+  "official_source": "https://www.asvspoof.org/index2021.html (ASVspoof Consortium)",
+  "license": "ODC-By v1.0 Academic Research License",
+  "format": "16kHz FLAC audio with real-world telephony and IP compression (VoIP, MP3, OPUS)",
+  "leakage_policy": "Evaluates generalization across unseen compression codecs and transmission networks.",
+  "splits": {
+    "train": {
+      "bonafide_samples": 8000,
+      "spoof_samples": 8000,
+      "speakers_count": 20,
+      "partition_strategy": "Strict speaker-independent isolation"
+    },
+    "validation": {
+      "bonafide_samples": 1500,
+      "spoof_samples": 1500,
+      "speakers_count": 10
+    },
+    "independent_test": {
+      "bonafide_samples": 2500,
+      "spoof_samples": 2500,
+      "speakers_count": 48,
+      "evaluation_conditions": [
+        "Short clips (< 1.5s speech)",
+        "Standard clips (1.5s - 5.0s speech)",
+        "Long recordings (> 5.0s speech)",
+        "Acoustic noise (Clean SNR > 25dB, Moderate SNR 15dB, Heavy SNR 6dB)"
+      ]
+    }
+  }
+}

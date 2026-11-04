@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { KryptxNavbar } from './components/KryptxNavbar';
 import { KryptxHero } from './components/KryptxHero';
 import { HowKryptxWorks } from './components/HowKryptxWorks';
@@ -17,6 +17,7 @@ import { DetectionResult, UserProfile, PlatformStats } from './types/detector';
 import { ArrowLeft, ShieldCheck, RotateCcw, Plus, Download, ShieldAlert } from 'lucide-react';
 import { AdminIntelligenceCenter } from './components/AdminIntelligenceCenter';
 import { AdminTrainingWorkspace } from './components/AdminTrainingWorkspace';
+import { CinematicProductDemo } from './components/CinematicProductDemo';
 
 type PageView =
   | 'home'
@@ -61,6 +62,23 @@ export function App() {
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<DetectionResult[]>([]);
   const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
+  const [cinematicDemoOpen, setCinematicDemoOpen] = useState<boolean>(false);
+  const [savedScrollPos, setSavedScrollPos] = useState<number>(0);
+
+  const handleOpenCinematicDemo = () => {
+    const currentY = window.scrollY || document.documentElement.scrollTop || 0;
+    setSavedScrollPos(currentY);
+    document.body.style.overflow = 'hidden';
+    setCinematicDemoOpen(true);
+  };
+
+  const handleCloseCinematicDemo = () => {
+    document.body.style.overflow = '';
+    setCinematicDemoOpen(false);
+    setTimeout(() => {
+      window.scrollTo({ top: savedScrollPos, behavior: 'instant' });
+    }, 20);
+  };
 
   // Authentication State: Check if user is logged in
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
@@ -229,6 +247,8 @@ export function App() {
     }
   };
 
+  const activeXhrRef = useRef<XMLHttpRequest | null>(null);
+
   // Multimodal Analyze Handler
   const handleAnalyze = async (fileData: {
     file?: File;
@@ -238,6 +258,12 @@ export function App() {
     size: number;
     mediaType?: 'image' | 'video' | 'audio';
   }) => {
+    // Prevent duplicate concurrent requests
+    if (isAnalyzing) {
+      console.warn('Forensic analysis is already in progress, ignoring duplicate submit.');
+      return;
+    }
+
     setIsAnalyzing(true);
     setUploadProgress(0);
     setError(null);
@@ -264,6 +290,8 @@ export function App() {
 
         result = await new Promise<DetectionResult>((resolve, reject) => {
           const xhr = new XMLHttpRequest();
+          activeXhrRef.current = xhr;
+          let hasTimedOut = false;
           xhr.open('POST', endpoint, true);
 
           xhr.upload.onprogress = (event) => {
@@ -274,11 +302,13 @@ export function App() {
           };
 
           const timeoutId = setTimeout(() => {
+            hasTimedOut = true;
             xhr.abort();
-            reject(new Error(`Analysis request for ${mediaType} timed out after 60 seconds.`));
-          }, 60000);
+            reject(new Error(`Analysis request for ${mediaType} timed out after 120 seconds. Please check server status.`));
+          }, 120000);
 
           xhr.onload = () => {
+            activeXhrRef.current = null;
             clearTimeout(timeoutId);
             setUploadProgress(100);
             if (xhr.status >= 200 && xhr.status < 300) {
@@ -299,13 +329,17 @@ export function App() {
           };
 
           xhr.onerror = () => {
+            activeXhrRef.current = null;
             clearTimeout(timeoutId);
-            reject(new Error('Network error during media upload'));
+            reject(new Error('Network error during media upload. Check server connection.'));
           };
 
           xhr.onabort = () => {
+            activeXhrRef.current = null;
             clearTimeout(timeoutId);
-            reject(new Error(`Analysis request for ${mediaType} timed out.`));
+            if (!hasTimedOut) {
+              reject(new Error(`Analysis cancelled.`));
+            }
           };
 
           xhr.send(formData);
@@ -320,7 +354,7 @@ export function App() {
             : { imageBase64: fileData.base64, mimeType: fileData.mimeType, fileName: fileData.name, fileSize: fileData.size, userId: currentUserId };
 
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 45000);
+        const timeoutId = setTimeout(() => controller.abort(), 120000);
 
         const res = await fetch(endpoint, {
           method: 'POST',
@@ -523,43 +557,49 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#030712] text-slate-100 relative selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#10132F] relative selection:bg-[#5515D8]/20 selection:text-[#5515D8]">
       {/* Animated Digital Particle Wave Background spanning the viewport */}
       <ParticleWaveBackground />
 
-      {/* Shared KRYPTX Header Navigation with dedicated #080F20 background & authentication awareness */}
-      <KryptxNavbar
-        onOpenAuth={() => setAuthModalOpen(true)}
-        onTryDemo={() => navigateToView('detector', true)}
-        onNavigateSection={(sectionId) => {
-          if (pageView !== 'home') {
-            navigateToView('home', true);
-            setTimeout(() => {
+      {/* Shared KRYPTX Header Navigation with white translucent glassmorphism & authentication awareness */}
+      {!cinematicDemoOpen && (
+        <KryptxNavbar
+          onOpenAuth={() => setAuthModalOpen(true)}
+          onTryDemo={() => navigateToView('detector', true)}
+          onNavigateSection={(sectionId) => {
+            if (pageView !== 'home') {
+              navigateToView('home', true);
+              setTimeout(() => {
+                const el = document.getElementById(sectionId);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+            } else {
               const el = document.getElementById(sectionId);
               if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-          } else {
-            const el = document.getElementById(sectionId);
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-          }
-        }}
-        onNavigateView={(view) => navigateToView(view as PageView, true)}
-        onNavigateAdmin={(adminView) => navigateToView(adminView as PageView, true)}
-        user={user}
-        isAuthenticated={isAuthenticated}
-        onLogout={handleLogout}
-        historyCount={history.length}
-        onOpenHistory={() => navigateToView('history', true)}
-      />
+            }
+          }}
+          onNavigateView={(view) => navigateToView(view as PageView, true)}
+          onNavigateAdmin={(adminView) => navigateToView(adminView as PageView, true)}
+          user={user}
+          isAuthenticated={isAuthenticated}
+          onLogout={handleLogout}
+          historyCount={history.length}
+          onOpenHistory={() => navigateToView('history', true)}
+        />
+      )}
 
       {/* ================= PAGE ROUTING VIEW ================= */}
-      <div className="relative z-10 flex flex-col min-h-[calc(100vh-80px)]">
+      {!cinematicDemoOpen && (
+        <div className="relative z-10 flex flex-col min-h-[calc(100vh-80px)]">
         
         {/* VIEW 1: VISITING HOMEPAGE */}
         {pageView === 'home' && (
           <div>
             {/* Hero Section */}
-            <KryptxHero onTryDemo={() => navigateToView('detector', true)} />
+            <KryptxHero
+              onTryDemo={() => navigateToView('detector', true)}
+              onOpenCinematicDemo={handleOpenCinematicDemo}
+            />
 
             {/* Workflow & Live Analysis Preview */}
             <HowKryptxWorks
@@ -576,84 +616,84 @@ export function App() {
             />
 
             {/* Technology Architecture & Scientific Explanations */}
-            <section id="technology" className="relative py-16 border-t border-cyan-500/10">
+            <section id="technology" className="relative py-16 bg-[#FAF8FF] border-t border-[#E4DEFF]">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center max-w-2xl mx-auto mb-12">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-mono tracking-widest uppercase mb-3">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#5515D8]/10 border border-[#5515D8]/20 text-[#5515D8] text-[10px] font-mono tracking-widest uppercase mb-3">
                     PRECISION SCIENTIFIC METHODOLOGY
                   </div>
-                  <h3 className="text-2xl sm:text-3xl font-heading font-extrabold text-white tracking-tight">
-                    How <span className="text-cyan-400">KRYPTX</span> Analyzes Authenticity
+                  <h3 className="text-2xl sm:text-3xl font-heading font-extrabold text-[#10132F] tracking-tight">
+                    How <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5515D8] to-[#1677FF]">KRYPTX</span> Analyzes Authenticity
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-400 mt-2">
+                  <p className="text-xs sm:text-sm text-[#525779] mt-2">
                     A multi-layered forensic inspection combining physical optics, frequency spectral analysis, and generative latent signature recognition.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="p-6 rounded-2xl bg-[#061224]/80 border border-cyan-500/20 space-y-3 relative group hover:border-cyan-500/50 transition-all shadow-lg shadow-cyan-950/20">
-                    <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-mono font-bold text-sm border border-cyan-500/20">
+                  <div className="p-6 rounded-2xl bg-white border border-[#E4DEFF] space-y-3 relative group hover:border-[#5515D8]/50 transition-all shadow-sm shadow-[#5515D8]/5 hover:shadow-md">
+                    <div className="w-10 h-10 rounded-xl bg-[#5515D8]/10 text-[#5515D8] flex items-center justify-center font-mono font-bold text-sm border border-[#5515D8]/20">
                       01
                     </div>
-                    <h4 className="text-base font-bold text-white font-heading">Stream & EXIF Ingestion</h4>
-                    <p className="text-xs text-slate-400 leading-relaxed">
+                    <h4 className="text-base font-bold text-[#10132F] font-heading">Stream & EXIF Ingestion</h4>
+                    <p className="text-xs text-[#525779] leading-relaxed">
                       Extracts embedded camera hardware signatures, lens models, shutter speeds, and ISO profiles. Detects known generative software tags while safeguarding against metadata spoofing.
                     </p>
                   </div>
 
-                  <div className="p-6 rounded-2xl bg-[#061224]/80 border border-blue-500/20 space-y-3 relative group hover:border-blue-500/50 transition-all shadow-lg shadow-blue-950/20">
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-mono font-bold text-sm border border-blue-500/20">
+                  <div className="p-6 rounded-2xl bg-white border border-[#E4DEFF] space-y-3 relative group hover:border-[#1677FF]/50 transition-all shadow-sm shadow-[#5515D8]/5 hover:shadow-md">
+                    <div className="w-10 h-10 rounded-xl bg-[#1677FF]/10 text-[#1677FF] flex items-center justify-center font-mono font-bold text-sm border border-[#1677FF]/20">
                       02
                     </div>
-                    <h4 className="text-base font-bold text-white font-heading">Frequency & ELA Differencing</h4>
-                    <p className="text-xs text-slate-400 leading-relaxed">
+                    <h4 className="text-base font-bold text-[#10132F] font-heading">Frequency & ELA Differencing</h4>
+                    <p className="text-xs text-[#525779] leading-relaxed">
                       Computes Error Level Analysis (ELA) and Sobel gradient filters to highlight unnatural compression tolerances, edge sharpening boundaries, and synthetic micro-smoothing.
                     </p>
                   </div>
 
-                  <div className="p-6 rounded-2xl bg-[#061224]/80 border border-violet-500/20 space-y-3 relative group hover:border-violet-500/50 transition-all shadow-lg shadow-violet-950/20">
-                    <div className="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-400 flex items-center justify-center font-mono font-bold text-sm border border-violet-500/20">
+                  <div className="p-6 rounded-2xl bg-white border border-[#E4DEFF] space-y-3 relative group hover:border-[#8B32FF]/50 transition-all shadow-sm shadow-[#5515D8]/5 hover:shadow-md">
+                    <div className="w-10 h-10 rounded-xl bg-[#8B32FF]/10 text-[#8B32FF] flex items-center justify-center font-mono font-bold text-sm border border-[#8B32FF]/20">
                       03
                     </div>
-                    <h4 className="text-base font-bold text-white font-heading">Multimodal Vision Reasoning</h4>
-                    <p className="text-xs text-slate-400 leading-relaxed">
+                    <h4 className="text-base font-bold text-[#10132F] font-heading">Multimodal Vision Reasoning</h4>
+                    <p className="text-xs text-[#525779] leading-relaxed">
                       Evaluates physical optical laws—Snell's specular reflection, corneal catchlights, depth of field falloff, anatomical coherence, and generates an explainable forensic docket.
                     </p>
                   </div>
                 </div>
 
                 {/* Forensic FAQ */}
-                <div id="about" className="mt-16 pt-12 border-t border-slate-800/80">
+                <div id="about" className="mt-16 pt-12 border-t border-[#E4DEFF]">
                   <div className="text-center mb-8">
-                    <h4 className="text-xl sm:text-2xl font-heading font-bold text-white tracking-tight">
+                    <h4 className="text-xl sm:text-2xl font-heading font-bold text-[#10132F] tracking-tight">
                       Frequently Asked Forensic Questions
                     </h4>
                   </div>
 
                   <div className="space-y-4 max-w-4xl mx-auto text-xs">
-                    <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1.5">
-                      <div className="font-bold text-white text-sm">
+                    <div className="p-4 rounded-xl bg-white border border-[#E4DEFF] space-y-1.5 shadow-sm shadow-[#5515D8]/5">
+                      <div className="font-bold text-[#10132F] text-sm">
                         Can AI media detectors be 100% accurate?
                       </div>
-                      <p className="text-slate-400 leading-relaxed">
+                      <p className="text-[#525779] leading-relaxed">
                         No scientific detector can claim 100% infallibility. As generative models improve and social media platforms re-compress images, false positives and false negatives can occur. KRYPTX is designed to provide calibrated probabilities and corroborating evidence rather than unfounded certainty.
                       </p>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1.5">
-                      <div className="font-bold text-white text-sm">
+                    <div className="p-4 rounded-xl bg-white border border-[#E4DEFF] space-y-1.5 shadow-sm shadow-[#5515D8]/5">
+                      <div className="font-bold text-[#10132F] text-sm">
                         Does missing EXIF metadata mean an image is AI generated?
                       </div>
-                      <p className="text-slate-400 leading-relaxed">
+                      <p className="text-[#525779] leading-relaxed">
                         Never. WhatsApp, Instagram, X (Twitter), and messaging apps strip EXIF data automatically for user privacy. KRYPTX treats missing EXIF as an inconclusive factor rather than proof of AI creation.
                       </p>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1.5">
-                      <div className="font-bold text-white text-sm">
+                    <div className="p-4 rounded-xl bg-white border border-[#E4DEFF] space-y-1.5 shadow-sm shadow-[#5515D8]/5">
+                      <div className="font-bold text-[#10132F] text-sm">
                         What does an "Inconclusive" verdict indicate?
                       </div>
-                      <p className="text-slate-400 leading-relaxed">
+                      <p className="text-[#525779] leading-relaxed">
                         An Inconclusive result is issued when media is heavily compressed, low resolution, or contains mixed signals that prevent a high-confidence forensic classification under rigorous scientific standards.
                       </p>
                     </div>
@@ -671,35 +711,42 @@ export function App() {
               /* COMPLETED FORENSIC REPORT SCREEN (STAYS VISIBLE WITHOUT ANY AUTO-REFRESH) */
               <div className="space-y-6">
                 {/* Navigation Bar above result */}
-                <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-[#080F20] border border-cyan-500/25">
+                <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-white border border-[#E4DEFF] shadow-sm shadow-[#5515D8]/5">
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => navigateToView('home', true)}
-                      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-300 hover:text-white hover:border-cyan-500/40 transition-all cursor-pointer"
+                      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#F8F7FF] border border-[#E4DEFF] text-xs font-semibold text-[#525779] hover:text-[#10132F] hover:border-[#5515D8] transition-all cursor-pointer"
                     >
-                      <ArrowLeft className="w-3.5 h-3.5 text-cyan-400" />
+                      <ArrowLeft className="w-3.5 h-3.5 text-[#5515D8]" />
                       <span>Back to Home</span>
                     </button>
 
                     <button
                       onClick={handleResetScan}
-                      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-xs font-semibold text-cyan-300 hover:bg-cyan-500/20 transition-all cursor-pointer"
+                      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#5515D8] to-[#8B32FF] text-white text-xs font-semibold shadow-md shadow-[#5515D8]/20 hover:brightness-110 transition-all cursor-pointer"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
                       <span>Scan New Media</span>
                     </button>
                   </div>
 
-                  <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <div className="flex items-center gap-2 text-xs font-mono text-[#525779]">
+                    <span className="w-2 h-2 rounded-full bg-[#5515D8] animate-pulse" />
                     <span>FORENSIC DOSSIER LOCKED & VERIFIED</span>
                   </div>
                 </div>
 
-                {/* Forensic Dossier Component */}
+                {/* Forensic Dossier Component (Hive-Style Advanced Detector) */}
                 <DetectionResultView
                   result={activeResult}
                   onReset={handleResetScan}
+                  history={history}
+                  onSelectResult={(item) => {
+                    setActiveResult(item);
+                    try {
+                      sessionStorage.setItem('kryptx_active_scan', JSON.stringify(item));
+                    } catch {}
+                  }}
                 />
               </div>
             ) : (
@@ -708,9 +755,9 @@ export function App() {
                 <div className="mb-4">
                   <button
                     onClick={() => navigateToView('home', true)}
-                    className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#080F20] border border-cyan-500/20 text-xs font-semibold text-slate-300 hover:text-white hover:border-cyan-400 transition-all cursor-pointer"
+                    className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#F8F7FF] border border-[#E4DEFF] text-xs font-semibold text-[#525779] hover:text-[#10132F] hover:border-[#5515D8] transition-all cursor-pointer"
                   >
-                    <ArrowLeft className="w-3.5 h-3.5 text-cyan-400" />
+                    <ArrowLeft className="w-3.5 h-3.5 text-[#5515D8]" />
                     <span>← Return to KRYPTX Overview</span>
                   </button>
                 </div>
@@ -735,9 +782,9 @@ export function App() {
             <div className="mb-4">
               <button
                 onClick={() => navigateToView('home', true)}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#080F20] border border-cyan-500/20 text-xs font-semibold text-slate-300 hover:text-white hover:border-cyan-400 transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#F8F7FF] border border-[#E4DEFF] text-xs font-semibold text-[#525779] hover:text-[#10132F] hover:border-[#5515D8] transition-all cursor-pointer"
               >
-                <ArrowLeft className="w-3.5 h-3.5 text-cyan-400" />
+                <ArrowLeft className="w-3.5 h-3.5 text-[#5515D8]" />
                 <span>← Back to Overview</span>
               </button>
             </div>
@@ -767,9 +814,9 @@ export function App() {
             <div className="mb-4">
               <button
                 onClick={() => navigateToView('home', true)}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#080F20] border border-cyan-500/20 text-xs font-semibold text-slate-300 hover:text-white hover:border-cyan-400 transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#F8F7FF] border border-[#E4DEFF] text-xs font-semibold text-[#525779] hover:text-[#10132F] hover:border-[#5515D8] transition-all cursor-pointer"
               >
-                <ArrowLeft className="w-3.5 h-3.5 text-cyan-400" />
+                <ArrowLeft className="w-3.5 h-3.5 text-[#5515D8]" />
                 <span>← Back to Overview</span>
               </button>
             </div>
@@ -795,28 +842,28 @@ export function App() {
         {/* ACCESS DENIED GUARD FOR ADMIN TRAINING ROUTES */}
         {pageView.startsWith('admin-') && user?.role !== 'ADMIN' && (
           <div className="max-w-2xl mx-auto px-4 py-20 text-center space-y-4 my-auto flex-1 flex flex-col justify-center">
-            <div className="w-16 h-16 mx-auto rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-[#5515D8]/10 border border-[#5515D8]/30 flex items-center justify-center text-[#5515D8]">
               <ShieldAlert className="w-8 h-8 animate-pulse" />
             </div>
-            <div className="inline-block px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-400 font-mono text-xs font-bold mx-auto">
+            <div className="inline-block px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-500 font-mono text-xs font-bold mx-auto">
               403 FORBIDDEN — RESTRICTED ACCESS
             </div>
-            <h2 className="text-2xl font-heading font-extrabold text-white">
+            <h2 className="text-2xl font-heading font-extrabold text-[#10132F]">
               Administrator Access Only
             </h2>
-            <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
+            <p className="text-xs text-[#525779] max-w-md mx-auto leading-relaxed">
               The KRYPTX Intelligence Training Center is restricted exclusively to authorized administrators. Ordinary users and demo analysts do not have permission to calibrate or govern forensic models.
             </p>
             <div className="flex items-center justify-center gap-3 pt-2">
               <button
                 onClick={() => setAuthModalOpen(true)}
-                className="px-5 py-2.5 rounded-xl bg-purple-500 hover:bg-purple-400 text-white font-heading font-bold text-xs uppercase tracking-wider transition-all shadow-lg"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#5515D8] to-[#8B32FF] text-white font-heading font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-[#5515D8]/20 hover:brightness-110"
               >
                 Sign In as Administrator
               </button>
               <button
                 onClick={() => navigateToView('home', true)}
-                className="px-5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 hover:text-white text-xs font-semibold transition-colors"
+                className="px-5 py-2.5 rounded-xl bg-[#F8F7FF] border border-[#E4DEFF] text-[#525779] hover:text-[#10132F] text-xs font-semibold transition-colors"
               >
                 Return to Homepage
               </button>
@@ -863,6 +910,7 @@ export function App() {
         {/* Global KRYPTX Footer */}
         <KryptxFooter />
       </div>
+      )}
 
       {/* Auth & Tier Modal */}
       <AuthModal
@@ -875,6 +923,18 @@ export function App() {
         onLogout={handleLogout}
         onUpdateTier={handleUpdateTier}
       />
+
+      {/* 50-Second Fullscreen Agentic AI Forensic Demonstration */}
+      {cinematicDemoOpen && (
+        <CinematicProductDemo
+          isOpen={cinematicDemoOpen}
+          onClose={handleCloseCinematicDemo}
+          onLaunchLiveDemo={() => {
+            handleCloseCinematicDemo();
+            navigateToView('detector', true);
+          }}
+        />
+      )}
     </div>
   );
 }

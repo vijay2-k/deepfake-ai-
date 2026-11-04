@@ -6,7 +6,13 @@ export type MediaType = 'image' | 'video' | 'audio';
 
 export type DetectionVerdict =
   | 'Likely AI Generated'
+  | 'Likely AI-Generated'
   | 'Likely Real Photograph'
+  | 'Likely AI Modified Photograph'
+  | 'Likely Authentic'
+  | 'Likely Deepfake'
+  | 'Possibly AI-Manipulated'
+  | 'Mixed / Partially Manipulated'
   | 'Likely Synthetic Video / Deepfake'
   | 'Likely Authentic Video'
   | 'Likely AI Generated Voice / Clone'
@@ -81,9 +87,192 @@ export interface AudioSegmentAnalysis {
   syntheticLikelihood: number; // 0-100
 }
 
+export interface ImageQualityInfo {
+  width: number;
+  height: number;
+  megapixels: number;
+  aspectRatio: string;
+  isPartialOrCrop: boolean;
+  cropRiskFactor: 'low' | 'moderate' | 'high';
+  blurIndex: number;
+  isBlurry: boolean;
+  estimatedQualityFactor: number;
+  noiseVariance: number;
+  hasUniformSmoothing: boolean;
+  sufficiency: 'sufficient' | 'marginal' | 'insufficient';
+  reason?: string;
+}
+
+export interface PatchGridItem {
+  patchIndex: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  gradientEnergy: number;
+  noiseResidual: number;
+  microSmoothness: number;
+  syntheticScore: number;
+  anomalyType?: string;
+  isSuspicious: boolean;
+}
+
+export interface PatchAnalysisInfo {
+  patchesExtracted: number;
+  suspiciousPatchesCount: number;
+  patchAggregationScore: number;
+  patchGrid: PatchGridItem[];
+}
+
+export interface PerceivedVoiceAgeInfo {
+  estimatedAgeRange: string; // e.g. "Adult (30–44)" or "AGE ESTIMATION UNAVAILABLE"
+  confidenceRating: 'High' | 'Moderate' | 'Low' | 'Unavailable';
+  vocalResonanceCategory: string;
+  estimatedF0Hz: number;
+  uncertaintyDisclaimer: string;
+  isAvailable: boolean;
+}
+
+export interface VoiceCharacteristicsInfo {
+  speakingPitchHz: number;
+  pitchStdDevHz: number;
+  pitchDynamicsSummary: string;
+  speechRhythm: string;
+  pauseCadence: string;
+  voiceClarity: string;
+}
+
+export interface VoiceForensicsInfo {
+  totalDurationSec: number;
+  usableSpeechSec: number;
+  silenceOrNoiseSec: number;
+  speechRatioPct: number;
+  snrDb: number;
+  isDurationSufficient: boolean;
+  sufficiencyReason?: string;
+  spectralCentroidHz: number;
+  spectralRolloffHz: number;
+  zeroCrossingRate: number;
+  pitchF0Variance: number;
+  vocoderPhaseMetallicScore: number;
+  formantContinuityScore: number;
+  voiceCharacteristics?: VoiceCharacteristicsInfo;
+  perceivedAgeEstimate?: PerceivedVoiceAgeInfo;
+  detectorEngine?: string;
+  detectorVersion?: string;
+  segments: {
+    segmentIndex: number;
+    startTime: string;
+    endTime: string;
+    durationSec: number;
+    isUsableSpeech: boolean;
+    syntheticScore: number;
+    vocoderArtifactsFound: boolean;
+    finding: string;
+  }[];
+}
+
+export interface RegionalForensicFinding {
+  regionType: 'face' | 'clothing' | 'background' | 'enhancement' | 'general';
+  label: string;
+  manipulationLikelihood: number; // 0-100
+  status: 'high_evidence' | 'moderate_evidence' | 'authentic_unmodified' | 'insufficient_evidence';
+  coordinates?: { x: number; y: number; width: number; height: number }; // percentage 0-100
+  evidencePoints: string[];
+  textureDiscrepancy: number;
+  noiseInconsistency: number;
+}
+
+export interface RegionalAnalysisDetails {
+  faceAssessment: {
+    status: 'manipulated' | 'authentic' | 'inconclusive' | 'no_face_detected';
+    score: number;
+    findings: string;
+    coordinates?: { x: number; y: number; width: number; height: number };
+  };
+  clothingAssessment: {
+    status: 'manipulated' | 'authentic' | 'inconclusive' | 'no_clothing_detected';
+    score: number;
+    findings: string;
+    coordinates?: { x: number; y: number; width: number; height: number };
+  };
+  backgroundAssessment: {
+    status: 'manipulated' | 'authentic' | 'inconclusive';
+    score: number;
+    findings: string;
+    coordinates?: { x: number; y: number; width: number; height: number };
+  };
+  enhancementAssessment: {
+    isGenerativeUpscaled: boolean;
+    isAiSharpened: boolean;
+    isSkinRetouched: boolean;
+    findings: string;
+  };
+  regions: RegionalForensicFinding[];
+  manipulationHeatmapUrl?: string;
+}
+
+export interface GenerationSourceItem {
+  engine: string; // e.g. "gptimage2", "midjourney", "dall_e", "stable_diffusion", "flux", "sora", "kling", etc.
+  probability: number; // 0-100 (e.g. 99.8)
+  category: 'image' | 'video' | 'multimodal';
+  isConclusive?: boolean;
+  provider?: string;
+  notes?: string;
+}
+
+export interface FaceDeepfakeDetection {
+  faceId: number;
+  coordinates: { x: number; y: number; width: number; height: number }; // percentage 0-100
+  deepfakeScore: number; // 0-100
+  isDeepfake: boolean;
+  faceQuality: number; // 0-100
+  landmarks?: string;
+  findings: string;
+}
+
+export interface DeepfakeAnalysisInfo {
+  facesDetectedCount: number;
+  overallDeepfakeScore: number; // 0-100
+  verdict: 'Likely Authentic' | 'Likely Deepfake' | 'No Detectable Face' | 'Inconclusive';
+  faces: FaceDeepfakeDetection[];
+  faceSwapDetected: boolean;
+  syntheticIdentityDetected: boolean;
+  confidenceRating?: 'High' | 'Moderate' | 'Low';
+}
+
+export interface C2PAMetadataInfo {
+  hasC2PA: boolean;
+  issuer?: string;
+  manifestTitle?: string;
+  claimGenerator?: string;
+  signatureValid?: boolean;
+  validationStatus: 'verified' | 'unverified' | 'tampered' | 'not_present';
+  details?: string;
+}
+
+export interface DetectionProviderInfo {
+  provider: 'hive' | 'local_kryptx' | 'gemini_vision' | 'hybrid';
+  displayName: string;
+  status: 'live_external' | 'local_active' | 'fallback_active';
+  latencyMs: number;
+  externalId?: string;
+  apiVersion?: string;
+}
+
 export interface AnalysisDetails {
   ai_probability: number;
   human_probability: number;
+  ai_generated_score?: number; // Hive-style overall AI-Generated % (e.g. 99.7%)
+  deepfake_score?: number; // Hive-style overall Deepfake % (e.g. 0.0%)
+  generation_sources?: GenerationSourceItem[]; // Top generation models breakdown
+  deepfake_analysis?: DeepfakeAnalysisInfo; // Face-level deepfake details
+  c2pa_metadata?: C2PAMetadataInfo; // C2PA credentials
+  provider_info?: DetectionProviderInfo; // Provider adapter information
+  whole_image_ai_likelihood?: number;
+  local_manipulation_likelihood?: number;
+  authentic_camera_evidence?: number;
+  confidence_level?: 'High' | 'Moderate' | 'Low';
   visual_artifacts: VisualArtifact[];
   lighting_and_shadow_assessment: string;
   texture_and_skin_assessment: string;
@@ -96,6 +285,13 @@ export interface AnalysisDetails {
   metadata: ExifMetadata;
   knowledge_version?: string;
   frequency_analysis_notes?: string;
+  stage_timings?: Record<string, number>;
+  job_id?: string;
+  // Media-specific dedicated forensic engines
+  image_quality?: ImageQualityInfo;
+  patch_analysis?: PatchAnalysisInfo;
+  regional_analysis?: RegionalAnalysisDetails;
+  voice_forensics?: VoiceForensicsInfo;
   // Video specific
   frame_analyses?: VideoFrameAnalysis[];
   temporal_coherence_notes?: string;

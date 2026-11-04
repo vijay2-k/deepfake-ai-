@@ -27,7 +27,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   historyCount,
 }) => {
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md border-b transition-colors duration-200 border-slate-800/80 bg-slate-950/80">
+    <header className="sticky top-0 z-50 backdrop-blur-md border-b transition-colors duration-200 border-slate-800/80 bg-[#F8F7FF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Brand Logo */}
@@ -39,7 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1 bg-slate-900/60 p-1 rounded-xl border border-slate-800/60">
+          <nav className="hidden md:flex items-center gap-1 bg-white/60 p-1 rounded-xl border border-slate-800/60">
             <button
               onClick={() => setActiveTab('detector')}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
@@ -110,7 +110,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Unlimited / Fair Use Quota Badge */}
             <div
               onClick={onOpenAuth}
-              className="cursor-pointer hidden sm:flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all text-xs"
+              className="cursor-pointer hidden sm:flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-white border border-slate-800 hover:border-slate-700 transition-all text-xs"
             >
               {user.tier === 'pro' || user.tier === 'enterprise' ? (
                 <div className="flex items-center gap-1.5 text-amber-400 font-semibold">
@@ -128,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Profile Avatar / Trigger */}
             <button
               onClick={onOpenAuth}
-              className="flex items-center gap-2 p-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-indigo-500/50 transition-all text-xs font-medium text-slate-300"
+              className="flex items-center gap-2 p-1.5 rounded-lg bg-white border border-slate-800 hover:border-indigo-500/50 transition-all text-xs font-medium text-slate-300"
               title="User Account & Policy Settings"
             >
               <div className="w-7 h-7 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs">

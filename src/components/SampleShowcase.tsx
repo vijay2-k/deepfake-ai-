@@ -11,7 +11,7 @@ export const SampleShowcase: React.FC<SampleShowcaseProps> = ({ onSelectSample }
     <div className="w-full max-w-6xl mx-auto px-4 py-8 space-y-8 animate-fade-in">
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#5515D8]/10 border border-[#E4DEFF] text-[#5515D8] text-xs font-semibold">
           <Sparkles className="w-3.5 h-3.5" />
           <span>Forensic Benchmarking Laboratory</span>
         </div>
@@ -32,11 +32,11 @@ export const SampleShowcase: React.FC<SampleShowcaseProps> = ({ onSelectSample }
           return (
             <div
               key={sample.id}
-              className="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 hover:border-slate-700 transition-all flex flex-col justify-between shadow-xl"
+              className="bg-white rounded-2xl border border-[#E4DEFF] p-5 hover:border-[#5515D8]/60 transition-all flex flex-col justify-between shadow-xl"
             >
               <div className="space-y-4">
                 {/* Image and Badge */}
-                <div className="relative aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center group">
+                <div className="relative aspect-[16/10] bg-[#F8F7FF] rounded-xl overflow-hidden border border-[#E4DEFF] flex items-center justify-center group">
                   <img
                     src={sample.dataUrl}
                     alt={sample.title}
@@ -67,7 +67,7 @@ export const SampleShowcase: React.FC<SampleShowcaseProps> = ({ onSelectSample }
                 </div>
 
                 {/* Forensic Telltales List */}
-                <div className="space-y-2 pt-2 border-t border-slate-800/80">
+                <div className="space-y-2 pt-2 border-t border-[#E4DEFF]">
                   <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                     Forensic Examination Markers:
                   </div>
@@ -87,10 +87,10 @@ export const SampleShowcase: React.FC<SampleShowcaseProps> = ({ onSelectSample }
               </div>
 
               {/* Action Button */}
-              <div className="mt-5 pt-4 border-t border-slate-800">
+              <div className="mt-5 pt-4 border-t border-[#E4DEFF]">
                 <button
                   onClick={() => onSelectSample(sample)}
-                  className="w-full py-2.5 px-4 rounded-xl bg-slate-950 hover:bg-indigo-600 text-indigo-300 hover:text-white border border-indigo-500/30 hover:border-indigo-600 text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md"
+                  className="w-full py-2.5 px-4 rounded-xl bg-[#F8F7FF] hover:bg-[#5515D8] text-[#5515D8] hover:text-white border border-[#E4DEFF] hover:border-[#5515D8] text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md"
                 >
                   <span>Load Specimen & Run Forensic Scan</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -102,9 +102,9 @@ export const SampleShowcase: React.FC<SampleShowcaseProps> = ({ onSelectSample }
       </div>
 
       {/* Forensic Deep-Dive Educational Section */}
-      <div className="bg-slate-900/60 rounded-2xl border border-slate-800 p-6 sm:p-8 space-y-6">
+      <div className="bg-white rounded-2xl border border-[#E4DEFF] p-6 sm:p-8 space-y-6">
         <h3 className="text-xl font-bold text-white flex items-center gap-2">
-          <ShieldCheck className="w-5 h-5 text-indigo-400" />
+          <ShieldCheck className="w-5 h-5 text-[#5515D8]" />
           The Science of AI Image Forensics
         </h3>
 

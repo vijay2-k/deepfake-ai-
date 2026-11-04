@@ -1,0 +1,18 @@
+{
+  "generated_at": "2026-11-03T07:54:36.918Z",
+  "image_datasets_count": 5,
+  "voice_datasets_count": 5,
+  "manifests": {
+    "genimage": "C:\\Users\\Fet Event Tech\\Downloads\\truelens-ai--main (1)\\truelens-ai--main\\data\\datasets\\manifest_image_genimage.json",
+    "cifake": "C:\\Users\\Fet Event Tech\\Downloads\\truelens-ai--main (1)\\truelens-ai--main\\data\\datasets\\manifest_image_cifake.json",
+    "faceforensics_plus_plus": "C:\\Users\\Fet Event Tech\\Downloads\\truelens-ai--main (1)\\truelens-ai--main\\data\\datasets\\manifest_image_faceforensics_plus_plus.json",
+    "celeb_df": "C:\\Users\\Fet Event Tech\\Downloads\\truelens-ai--main (1)\\truelens-ai--main\\data\\datasets\\manifest_image_celeb_df.json",
+    "dfdc": "C:\\Users\\Fet Event Tech\\Downloads\\truelens-ai--main (1)\\truelens-ai--main\\data\\datasets\\manifest_image_dfdc.json",
+    "asvspoof_2019": "C:\\Users\\Fet Event Tech\\Downloads\\truelens-ai--main (1)\\truelens-ai--main\\data\\datasets\\manifest_voice_asvspoof_2019.json",
+    "asvspoof_2021": "C:\\Users\\Fet Event Tech\\Downloads\\truelens-ai--main (1)\\truelens-ai--main\\data\\datasets\\manifest_voice_asvspoof_2021.json",
+    "wavefake": "C:\\Users\\Fet Event Tech\\Downloads\\truelens-ai--main (1)\\truelens-ai--main\\data\\datasets\\manifest_voice_wavefake.json",
+    "fakeavceleb": "C:\\Users\\Fet Event Tech\\Downloads\\truelens-ai--main (1)\\truelens-ai--main\\data\\datasets\\manifest_voice_fakeavceleb.json",
+    "mlaad": "C:\\Users\\Fet Event Tech\\Downloads\\truelens-ai--main (1)\\truelens-ai--main\\data\\datasets\\manifest_voice_mlaad.json",
+    "ood_evaluation": "C:\\Users\\Fet Event Tech\\Downloads\\truelens-ai--main (1)\\truelens-ai--main\\data\\datasets\\manifest_ood_evaluation.json"
+  }
+}

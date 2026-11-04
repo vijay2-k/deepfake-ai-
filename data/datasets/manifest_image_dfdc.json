@@ -1,0 +1,30 @@
+{
+  "dataset_id": "dfdc",
+  "official_source": "https://www.kaggle.com/c/deepfake-detection-challenge (Meta, AWS, Microsoft, Partnership on AI)",
+  "license": "DFDC Competition License (Research and Evaluation Permitted)",
+  "format": "Full HD MP4 video, varied frame rates and ambient lighting",
+  "leakage_policy": "Actor-isolated partitioning. Consenting subjects in the evaluation split do not appear in training.",
+  "splits": {
+    "train": {
+      "real_samples": 10000,
+      "synthetic_samples": 10000,
+      "class_ratio": "1.0 (50% real / 50% synthetic)",
+      "partition_strategy": "Stratified by generator model family"
+    },
+    "validation": {
+      "real_samples": 2000,
+      "synthetic_samples": 2000,
+      "class_ratio": "1.0"
+    },
+    "independent_test": {
+      "real_samples": 3000,
+      "synthetic_samples": 3000,
+      "class_ratio": "1.0",
+      "evaluation_conditions": [
+        "Full resolution (512x512)",
+        "Partial crops (128x128, 256x256)",
+        "JPEG compression (Q=50, Q=75, Q=90)"
+      ]
+    }
+  }
+}
