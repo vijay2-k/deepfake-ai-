@@ -4,6 +4,7 @@ import exifr from 'exifr';
 import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
@@ -47,16 +48,67 @@ import multer from 'multer';
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 
-// Temporary storage directory for multipart file uploads
-const UPLOAD_DIR = path.join(__dirname, 'data', 'uploads');
-if (!fs.existsSync(UPLOAD_DIR)) {
-  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+// CORS configuration for web & serverless deployment
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-admin-token');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
+
+// URL Normalization Middleware for Vercel Serverless Function rewrites
+app.use((req, _res, next) => {
+  if (!req.url.startsWith('/api') && !req.url.startsWith('/_')) {
+    const urlParts = req.url.split('?');
+    const pathPart = urlParts[0];
+    const queryPart = urlParts[1] ? '?' + urlParts[1] : '';
+    req.url = '/api' + (pathPart.startsWith('/') ? pathPart : '/' + pathPart) + queryPart;
+  }
+  next();
+});
+
+// Root & Health diagnostic endpoint
+app.get(['/api', '/api/health'], (_req: Request, res: Response) => {
+  const hasKey = Boolean(process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY);
+  res.json({
+    status: 'ok',
+    service: 'KRYPTX Multimodal AI Forensic Platform',
+    version: '2.0.0',
+    environment: process.env.VERCEL ? 'vercel-serverless' : 'local-node',
+    geminiConfigured: hasKey,
+    timestamp: new Date().toISOString(),
+  });
+});
+
+const isVercel = Boolean(process.env.VERCEL);
+
+// Temporary storage directory for multipart file uploads (using /tmp on serverless)
+const UPLOAD_DIR = isVercel
+  ? path.join(os.tmpdir(), 'kryptx_uploads')
+  : path.join(__dirname, 'data', 'uploads');
+
+try {
+  if (!fs.existsSync(UPLOAD_DIR)) {
+    fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+  }
+} catch (e) {
+  console.warn('Could not ensure UPLOAD_DIR:', e);
 }
 
 // Dedicated storage directory for admin training references (isolated from public uploads)
-const TRAINING_UPLOAD_DIR = path.join(__dirname, 'data', 'training_uploads');
-if (!fs.existsSync(TRAINING_UPLOAD_DIR)) {
-  fs.mkdirSync(TRAINING_UPLOAD_DIR, { recursive: true });
+const TRAINING_UPLOAD_DIR = isVercel
+  ? path.join(os.tmpdir(), 'kryptx_training_uploads')
+  : path.join(__dirname, 'data', 'training_uploads');
+
+try {
+  if (!fs.existsSync(TRAINING_UPLOAD_DIR)) {
+    fs.mkdirSync(TRAINING_UPLOAD_DIR, { recursive: true });
+  }
+} catch (e) {
+  console.warn('Could not ensure TRAINING_UPLOAD_DIR:', e);
 }
 
 const storage = multer.diskStorage({
@@ -87,9 +139,10 @@ const uploadAudio = multer({ storage, limits: { fileSize: 50 * 1024 * 1024 } });
 const uploadImage = multer({ storage, limits: { fileSize: 25 * 1024 * 1024 } }); // 25 MB image limit
 const uploadTraining = multer({ storage: trainingStorage, limits: { fileSize: 50 * 1024 * 1024 } });
 
-// Database storage directory
-const DB_DIR = path.join(__dirname, 'data');
-const DB_FILE = path.join(DB_DIR, 'db.json');
+// Database storage directory & in-memory cache
+const BUNDLED_DB_FILE = path.join(__dirname, 'data', 'db.json');
+const WRITABLE_DB_FILE = isVercel ? path.join(os.tmpdir(), 'kryptx_db.json') : BUNDLED_DB_FILE;
+let inMemoryDb: DatabaseSchema | null = null;
 
 interface AdminUserRecord {
   email: string;
@@ -115,24 +168,29 @@ function hashPassword(password: string, salt: string): string {
 }
 
 function initDb(): DatabaseSchema {
-  if (!fs.existsSync(DB_DIR)) {
-    fs.mkdirSync(DB_DIR, { recursive: true });
+  if (inMemoryDb) {
+    return inMemoryDb;
   }
 
   let data: DatabaseSchema;
-  if (!fs.existsSync(DB_FILE)) {
-    data = {
-      records: [],
-      userQuotas: {},
-    };
-  } else {
+  if (fs.existsSync(WRITABLE_DB_FILE)) {
     try {
-      data = JSON.parse(fs.readFileSync(DB_FILE, 'utf-8'));
-    } catch (err) {
-      console.error('Error reading db.json, reinitializing', err);
+      data = JSON.parse(fs.readFileSync(WRITABLE_DB_FILE, 'utf-8'));
+    } catch {
       data = { records: [], userQuotas: {} };
     }
+  } else if (fs.existsSync(BUNDLED_DB_FILE)) {
+    try {
+      data = JSON.parse(fs.readFileSync(BUNDLED_DB_FILE, 'utf-8'));
+    } catch {
+      data = { records: [], userQuotas: {} };
+    }
+  } else {
+    data = { records: [], userQuotas: {} };
   }
+
+  if (!data.records) data.records = [];
+  if (!data.userQuotas) data.userQuotas = {};
 
   let modified = false;
 
@@ -235,18 +293,22 @@ function initDb(): DatabaseSchema {
     modified = true;
   }
 
+  inMemoryDb = data;
+
   if (modified) {
-    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+    saveDb(data);
   }
 
   return data;
 }
 
 function saveDb(data: DatabaseSchema) {
+  inMemoryDb = data;
   try {
-    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+    fs.writeFileSync(WRITABLE_DB_FILE, JSON.stringify(data, null, 2));
   } catch (err) {
-    console.error('Failed to save db:', err);
+    // Non-fatal on serverless / read-only ephemeral platforms
+    console.warn('Note: Could not persist db to disk (in-memory state active):', err);
   }
 }
 
@@ -3249,9 +3311,16 @@ app.get('/api/admin/intelligence/benchmarks', requireAdminAuth, (_req: Request, 
 // ML DATASET TRAINING & CHECKPOINT MANAGEMENT PIPELINE
 // ============================================================================
 
-const datasetUploadDir = path.join(__dirname, 'data/training_datasets/uploads');
-if (!fs.existsSync(datasetUploadDir)) {
-  fs.mkdirSync(datasetUploadDir, { recursive: true });
+const datasetUploadDir = isVercel
+  ? path.join(os.tmpdir(), 'kryptx_dataset_uploads')
+  : path.join(__dirname, 'data/training_datasets/uploads');
+
+try {
+  if (!fs.existsSync(datasetUploadDir)) {
+    fs.mkdirSync(datasetUploadDir, { recursive: true });
+  }
+} catch (e) {
+  console.warn('Could not ensure datasetUploadDir:', e);
 }
 
 const uploadDatasetArchive = multer({
@@ -3461,4 +3530,10 @@ async function startServer() {
   });
 }
 
-startServer();
+// Only start standalone HTTP server in non-serverless environments (local dev / docker)
+if (!process.env.VERCEL) {
+  startServer();
+}
+
+export default app;
+export { app };

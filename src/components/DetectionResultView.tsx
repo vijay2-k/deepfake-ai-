@@ -1366,9 +1366,9 @@ Generated: ${new Date(result.created_at).toUTCString()}`;
                         <span>Deepfake / Face Manipulation</span>
                       </span>
                       <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded ${
-                        result.analysis_details.deepfake_analysis?.isDeepfake ? 'bg-rose-50 text-rose-700 border border-rose-300' : 'bg-emerald-50 text-emerald-700 border border-emerald-300'
+                        (result.analysis_details.deepfake_analysis?.overallDeepfakeScore ?? 0) > 50 || result.analysis_details.deepfake_analysis?.faceSwapDetected ? 'bg-rose-50 text-rose-700 border border-rose-300' : 'bg-emerald-50 text-emerald-700 border border-emerald-300'
                       }`}>
-                        {result.analysis_details.deepfake_analysis?.isDeepfake ? 'Detected' : 'Not Detected'}
+                        {(result.analysis_details.deepfake_analysis?.overallDeepfakeScore ?? 0) > 50 || result.analysis_details.deepfake_analysis?.faceSwapDetected ? 'Detected' : 'Not Detected'}
                       </span>
                     </div>
                     <p className="text-xs text-[#42445A] leading-relaxed">

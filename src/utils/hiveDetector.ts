@@ -92,7 +92,7 @@ export async function callHiveApiIfAvailable(
     console.log(`[Hive API] Dispatching request for "${fileName}" to ${endpoint}...`);
 
     const formData = new FormData();
-    const blob = new Blob([imageBuffer], { type: mimeType || 'image/jpeg' });
+    const blob = new Blob([new Uint8Array(imageBuffer)], { type: mimeType || 'image/jpeg' });
     formData.append('media', blob, fileName || 'upload.jpg');
 
     const res = await fetch(endpoint, {
